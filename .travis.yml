@@ -1,0 +1,9 @@
+language: node_js
+jobs:
+  include:
+    - stage: Codecov
+      script:
+        - yarn coverage
+      branches:
+        only:
+          - master
