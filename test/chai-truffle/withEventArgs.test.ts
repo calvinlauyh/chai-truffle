@@ -24,7 +24,7 @@ describe("not.withEventArgs", () => {
     expect(() => {
       expect(response)
         .to.emitEvent("TestEvent")
-        .but.not.withEventArgs(() => true);
+        .not.withEventArgs(() => true);
     }).to.throw(
       "expected transaction to emit event TestEvent, but was not emitted",
     );
@@ -39,7 +39,7 @@ describe("not.withEventArgs", () => {
         .not.to.emitEvent("MessageEvent")
         .withEventArgs(() => true);
     }).to.throw(
-      "expect(...).not.to.emitEvent(...).withEventArgs(...) pattern is not support. If you are asserting a transaction has emitted an event but not with the certain argument format, consider using expect(...).to.emitEvent(...).but.not.withEventArgs(...) instead",
+      "expect(...).not.to.emitEvent(...).withEventArgs(...) pattern is not support. If you are asserting a transaction has emitted an event but not with the certain argument format, consider using expect(...).to.emitEvent(...).not.withEventArgs(...) instead",
     );
   });
 
@@ -51,7 +51,7 @@ describe("not.withEventArgs", () => {
       expect(() => {
         expect(response)
           .to.emitEvent("MessageEvent")
-          .but.not.withEventArgs(
+          .not.withEventArgs(
             (args: Truffle.TransactionLogArgs): boolean => {
               return args.message === "Hello World";
             },
@@ -67,7 +67,7 @@ describe("not.withEventArgs", () => {
 
       expect(response)
         .to.emitEvent("MessageEvent")
-        .but.not.withEventArgs((args: Truffle.TransactionLogArgs): boolean => {
+        .not.withEventArgs((args: Truffle.TransactionLogArgs): boolean => {
           return args.message === "Foo Bar Baz";
         });
     });

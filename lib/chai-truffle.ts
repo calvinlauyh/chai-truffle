@@ -154,7 +154,7 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
     }
     if (isNegatedBeforeAssertEmitEvent(this)) {
       throw new Error(
-        "expect(...).not.to.emitEvent(...).withEventArgs(...) pattern is not support. If you are asserting a transaction has emitted an event but not with the certain argument format, consider using expect(...).to.emitEvent(...).but.not.withEventArgs(...) instead",
+        "expect(...).not.to.emitEvent(...).withEventArgs(...) pattern is not support. If you are asserting a transaction has emitted an event but not with the certain argument format, consider using expect(...).to.emitEvent(...).not.withEventArgs(...) instead",
       );
     }
 
