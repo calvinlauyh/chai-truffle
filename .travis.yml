@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - "8"
+cache: yarn
+jobs:
+  include:
+    - stage: Codecov
+      script:
+        - yarn coverage
+      if: branch = master AND type = push AND fork = false

@@ -1,6 +1,9 @@
 node_modules/
 yarn-error.log
 
+.nyc_output/
+coverage/
+
 wallaby.js
 
 build/

@@ -5,12 +5,16 @@
   "author": "Calvin Lau <calvinlauco@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "pretest": "yarn tsc",
+    "precodecov": "yarn coverage",
+    "codecov": "./node_modules/.bin/codecov",
+    "precoverage": "yarn build && rm -rf ./coverage",
+    "coverage": "./node_modules/.bin/nyc --reporter=lcov ./node_modules/.bin/truffle test",
+    "pretest": "yarn build",
     "test": "yarn truffle test",
-    "truffle": "./node_modules/.bin/truffle",
+    "build": "yarn tsc",
     "pretsc": "rm -rf ./build",
     "tsc": "./node_modules/.bin/tsc",
-    "mocha": "./node_modules/.bin/mocha --recursive --exit --require ./node_modules/ts-node/register/transpile-only './test/**/*.test.js'",
+    "truffle": "./node_modules/.bin/truffle",
     "prettier": "./node_modules/.bin/prettier '{src,test}/**/*.ts' --write",
     "tslint": "./node_modules/.bin/tslint --format verbose '{src,test}/**/*.ts'"
   },
@@ -20,10 +24,13 @@
     "@types/chai": "^4.1.7"
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^0.1.3",
     "@types/mocha": "^5.2.7",
     "@types/web3": "^1.0.18",
     "chai": "^4.2.0",
+    "codecov": "^3.5.0",
     "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
     "prettier": "^1.18.1",
     "truffle": "^5.0.21",
     "ts-node": "^8.2.0",
