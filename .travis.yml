@@ -4,7 +4,19 @@ node_js:
 cache: yarn
 jobs:
   include:
-    - stage: Codecov
+    - stage: Test
+      env:
+        - CHAI_VERSION=^4.0.0
+        - CHAI_VERSION=^3.0.0
+        - CHAI_VERSION=^2.0.0
+        - CHAI_VERSION=^1.0.0
       script:
-        - yarn coverage
-      if: branch = master AND type = push AND fork = false
+        - yarn add "chai@${CHAI_VERSION}"
+        - yarn test
+      if: type = pull_request
+    - stage: Coverage Report
+      script:
+        - yarn codecov
+branches:
+  only:
+    - master
