@@ -13,8 +13,7 @@ jobs:
   include:
     - stage: Test
       <<: *test
-      env:
-        - CHAI_VERSION=^4.0.0
+      env: CHAI_VERSION=^4.0.0
     - <<: *test
       env: CHAI_VERSION=^3.0.0
     - <<: *test
