@@ -7,7 +7,6 @@ test: &test
   script:
     - yarn add "chai@${CHAI_VERSION}"
     - yarn test
-  if: type = pull_request
 
 jobs:
   include:
