@@ -7,18 +7,20 @@ test: &test
   script:
     - yarn add "chai@${CHAI_VERSION}"
     - yarn test
+  if: type = pull_request
 
 jobs:
   include:
     - stage: Test
-      - <<: *test
-        env: CHAI_VERSION=^4.0.0
-      - <<: *test
-        env: CHAI_VERSION=^3.0.0
-      - <<: *test
-        env: CHAI_VERSION=^2.0.0
-      - <<: *test
-        env: CHAI_VERSION=^1.0.0
+      <<: *test
+      env:
+        - CHAI_VERSION=^4.0.0
+    - <<: *test
+      env: CHAI_VERSION=^3.0.0
+    - <<: *test
+      env: CHAI_VERSION=^2.0.0
+    - <<: *test
+      env: CHAI_VERSION=^1.0.0
     - stage: Coverage Report
       script:
         - yarn codecov
