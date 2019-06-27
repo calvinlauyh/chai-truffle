@@ -11,7 +11,10 @@ declare global {
       extends LanguageChains,
         NumericComparison,
         TypeComparison {
-      broadcast: Assertion;
+      evmSuccess(): Assertion;
+      evmFail(errorMessage?: string): Assertion;
+      evmOutOfGas(): Assertion;
+      evmRevert(): Assertion;
       transactionResponse: Assertion;
       eventLength(expectedLength: number): Assertion;
       eventLengthOf(expectedLength: number): Assertion;
@@ -24,6 +27,10 @@ declare global {
     }
 
     interface Assert {
+      evmSuccess<T>(val: T): void;
+      evmFail<T>(val: T, errorMessage?: string): void;
+      evmOutOfGas<T>(val: T): void;
+      evmRevert<T>(val: T): void;
       eventLength<T>(val: T, expectedLength: number): void;
       eventLengthOf<T>(val: T, expectedLength: number): void;
       emitEvent<T>(val: T, eventName?: string): void;
