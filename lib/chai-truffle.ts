@@ -144,6 +144,7 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
     if (isNil(expectedEventName)) {
       return assertHasEventEmittedWithAssertion(this);
     }
+    new Assertion(this._obj).to.be.transactionResponse;
 
     const obj: Truffle.TransactionResponse = this._obj;
     const targetEventLogIndex = obj.logs.findIndex(
