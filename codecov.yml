@@ -1,6 +1,6 @@
 comment: 
   layout: diff
-  behavior: new
+  behavior: default
 coverage:
   status:
     project: off
