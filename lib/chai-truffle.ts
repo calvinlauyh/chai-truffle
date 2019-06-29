@@ -24,19 +24,19 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
 
   const property = (
     name: string,
-    assertFn: (this: ChaiUse.Assertion) => ChaiUse.Assertion,
+    assertFn: (this: ChaiUse.Assertion) => Chai.Assertion,
   ) => {
     Assertion.addProperty(name, assertFn);
   };
 
   const method = (
     name: string,
-    assertFn: (this: ChaiUse.Assertion, ...args: any) => ChaiUse.Assertion,
+    assertFn: (this: ChaiUse.Assertion, ...args: any) => Chai.Assertion,
   ) => {
     Assertion.addMethod(name, assertFn);
   };
 
-  property("broadcast", function(this: ChaiUse.Assertion) {
+  method("evmSuccess", function(this: ChaiUse.Assertion) {
     assertIsPromiseLike(this._obj);
 
     const obj: Promise<any> = this._obj;
@@ -46,21 +46,80 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
         // to broadcast, then it should fail.
         failNegatedAssertion(
           this,
-          "expected not to broadcast, but broadcasted successfully",
+          "expected transaction to fail in EVM, but it succeeded",
         );
         new Assertion(result).to.be.transactionResponse;
       },
       (err: Error) => {
-        // Promise rejects with error, if the assertion expect to broadcast,
+        // Promise rejects to error, if the assertion expect to broadcast,
         // then it should fail.
-        failAssertion(this, "expected to broadcast, but fail with error", {
-          actual: err,
-        });
+        failAssertion(
+          this,
+          "expected transaction to succeed in EVM, but it failed",
+          {
+            actual: err,
+          },
+        );
       },
     );
 
     this.then = derivedPromise.then.bind(derivedPromise);
     return this;
+  });
+
+  method("evmFail", function(
+    this: ChaiUse.Assertion,
+    expectedErrorMessage?: string,
+  ) {
+    assertIsPromiseLike(this._obj);
+
+    const obj: Promise<any> = this._obj;
+    const derivedPromise = obj.then(
+      (result: any) => {
+        // Promise resolves to transaction response, if the assertion expect to fail,
+        // then it should fail.
+        const failMessage = isNil(expectedErrorMessage)
+          ? "expected transaction to fail in EVM, but it succeeded"
+          : `expected transaction to fail in EVM because of ${expectedErrorMessage}, but it succeeded`;
+        failAssertion(this, failMessage, {
+          actual: result,
+        });
+
+        new Assertion(result).to.be.transactionResponse;
+      },
+      (err: Error) => {
+        if (isNil(expectedErrorMessage)) {
+          // Promise rejects to error, if the assertion expect not to fail,
+          // then it should fail.
+          failNegatedAssertion(
+            this,
+            "expected transaction to succeed in EVM, but it failed",
+            {
+              actual: err,
+            },
+          );
+        } else {
+          this.assert(
+            err.message.indexOf(expectedErrorMessage as string) !== -1,
+            `expected transaction to fail in EVM because of ${expectedErrorMessage}, but it failed of another reason`,
+            `expected transaction not to fail in EVM because of ${expectedErrorMessage}, but it was`,
+            expectedErrorMessage,
+            err,
+          );
+        }
+      },
+    );
+
+    this.then = derivedPromise.then.bind(derivedPromise);
+    return this;
+  });
+
+  method("evmOutOfGas", function(this: ChaiUse.Assertion) {
+    return this.to.evmFail("out of gas");
+  });
+
+  method("evmRevert", function(this: ChaiUse.Assertion) {
+    return this.to.evmFail("revert");
   });
 
   property("transactionResponse", function(

@@ -37,6 +37,18 @@ contract Test {
 
     function doNothing() public {}
 
+    function drainGas() public {
+        for (uint i = 0; i < i + 1; i++) {
+            emitTestEvent();
+        }
+    }
+
+    function revertImmediately() public {
+        require(1 == 2, "Revert immediately");
+
+        emitTestEvent();
+    }
+
     function nextEventId() public view returns (uint) {
         return SafeMath.add(eventId, 1);
     }
