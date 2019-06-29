@@ -21,6 +21,10 @@ declare global {
       eventEmitted: Assertion;
       emitEvent(eventName?: string): Assertion;
       emitEventAt(eventName: string, position: number): Assertion;
+      emitEventWithArgs(
+        eventName: string,
+        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+      ): Assertion;
       withEventArgs(
         assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
       ): Assertion;
@@ -35,15 +39,16 @@ declare global {
       eventLengthOf<T>(val: T, expectedLength: number): void;
       emitEvent<T>(val: T, eventName?: string): void;
       emitEventAt<T>(val: T, eventName: string, position: number): void;
+      emitEventWithArgs<T>(
+        val: T,
+        eventName: string,
+        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+      ): void;
       withEventArgs<T>(
         val: T,
         assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
-      ): Assertion;
+      ): void;
     }
-  }
-
-  interface Array<T> {
-    should: Chai.Assertion;
   }
 }
 
