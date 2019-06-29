@@ -202,6 +202,7 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
 
     const obj: Truffle.TransactionResponse = this._obj;
     const eventLogPositionList = getEmitEventLogPosition(this);
+
     const firstMatchedEventLogIndex = eventLogPositionList[0];
     const eventName = obj.logs[firstMatchedEventLogIndex].event;
 
