@@ -55,7 +55,7 @@ declare namespace Truffle {
     (...args: Array<any | Web3EthTx[]>): Promise<TransactionResponse>;
     call: T;
   }
-  
+
   export interface ContractState<T> {
     (...args: any[]): Promise<T>;
     call(...args: any[]): Promise<T>;

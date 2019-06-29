@@ -117,7 +117,7 @@ describe(".emitEventAt()", () => {
     expect(() => {
       expect(response).to.emitEventAt("TestEvent", 0);
     }).to.throw(
-      "expected transaction to emit event TestEvent at position 0, but none was emitted",
+      "expected transaction to emit event TestEvent at position 0, but only 0 event(s) was emitted",
     );
   });
 

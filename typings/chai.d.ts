@@ -1,7 +1,7 @@
 declare namespace ChaiUse {
   export interface Utils {
-    flag(_this: Chai.Assertion, name: string): any;
-    flag(_this: Chai.Assertion, name: string, value: any): void;
+    flag(assertion: Chai.Assertion, name: string): any;
+    flag(assertion: Chai.Assertion, name: string, value: any): void;
     addMethod(
       prototype: Chai.Assertion,
       method: string,

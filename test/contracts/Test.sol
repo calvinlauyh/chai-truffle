@@ -26,6 +26,11 @@ contract Test {
         emitMessageEvent("Default Message");
     }
 
+    function emitTwoMessageEvents(string memory firstMessage, string memory secondMessage) public {
+        emitMessageEvent(firstMessage);
+        emitMessageEvent(secondMessage);
+    }
+
     function emitMessageEvent(string memory message) public {
         eventId = SafeMath.add(eventId, 1);
         emit MessageEvent(msg.sender, eventId, message);

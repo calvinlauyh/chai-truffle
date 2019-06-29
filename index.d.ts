@@ -13,6 +13,15 @@ declare global {
         TypeComparison {
       emitEvent(eventName?: string): Assertion;
       emitEventAt(eventName: string, position: number): Assertion;
+      emitEventWithArgs(
+        eventName: string,
+        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+      ): Assertion;
+      emitEventWithArgsAt(
+        eventName: string,
+        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+        position: number,
+      ): Assertion;
       eventLength(expectedLength: number): Assertion;
       eventLengthOf(expectedLength: number): Assertion;
       evmFail(errorMessage?: string): Assertion;
@@ -28,6 +37,17 @@ declare global {
     interface Assert {
       emitEvent<T>(val: T, eventName?: string): void;
       emitEventAt<T>(val: T, eventName: string, position: number): void;
+      emitEventWithArgs<T>(
+        val: T,
+        eventName: string,
+        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+      ): void;
+      emitEventWithArgsAt<T>(
+        val: T,
+        eventName: string,
+        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+        position: number,
+      ): void;
       eventLength<T>(val: T, expectedLength: number): void;
       eventLengthOf<T>(val: T, expectedLength: number): void;
       evmFail<T>(val: T, errorMessage?: string): void;
@@ -37,12 +57,8 @@ declare global {
       withEventArgs<T>(
         val: T,
         assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
-      ): Assertion;
+      ): void;
     }
-  }
-
-  interface Array<T> {
-    should: Chai.Assertion;
   }
 }
 
