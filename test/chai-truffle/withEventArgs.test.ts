@@ -51,11 +51,9 @@ describe("not.withEventArgs", () => {
       expect(() => {
         expect(response)
           .to.emitEvent("MessageEvent")
-          .not.withEventArgs(
-            (args: Truffle.TransactionLogArgs): boolean => {
-              return args.message === "Hello World";
-            },
-          );
+          .not.withEventArgs((args: Truffle.TransactionLogArgs): boolean => {
+            return args.message === "Hello World";
+          });
       }).to.throw(
         "expected transaction to emit event MessageEvent but not with argument(s) matching assert function, but argument(s) match",
       );

@@ -5,6 +5,9 @@ declare interface TestContractInstance extends Truffle.ContractInstance {
     () => Promise<void>
   >;
   emitDefaultMessageEvent: Truffle.ContractFunction<() => Promise<void>>;
+  emitTwoMessageEvents: Truffle.ContractFunction<
+    (firstMessage: string, secondMessage: string) => Promise<void>
+  >;
   emitMessageEvent: Truffle.ContractFunction<
     (message: string) => Promise<void>
   >;

@@ -1,5 +1,5 @@
-import "mocha";
 import { expect } from "chai";
+import "mocha";
 import { isNil } from "../lib/utils";
 
 describe("Utils", () => {

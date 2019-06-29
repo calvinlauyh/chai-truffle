@@ -1,5 +1,6 @@
 comment: 
-  layout: "diff"
+  layout: diff
+  behavior: default
 coverage:
   status:
     project: off
