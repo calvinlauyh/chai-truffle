@@ -46,7 +46,7 @@ describe(".not.emitEventWithArgs", () => {
     );
   });
 
-  context("Given multiple events are emitted", () => {
+  context("Given multiple events are emitted from transaction", () => {
     let response: Truffle.TransactionResponse;
     beforeEach(async () => {
       const contractInstance = await TestContract.new();
@@ -107,7 +107,7 @@ describe(".emitEventWithArgs", () => {
   });
 
   // tslint:disable-next-line:max-line-length
-  it("should not pass when the call has emitted the same event but with arguments not matching assert function", async () => {
+  it("should not pass when the call emits the same event but with arguments not matching assert function", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.emitMessageEvent("Hello World");
 
@@ -123,7 +123,7 @@ describe(".emitEventWithArgs", () => {
     );
   });
 
-  it("should not pass when the call has not emitted the exact matching event", async () => {
+  it("should not pass when the call does not emit the exact matching event", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.emitMessageEvent("Hello World");
 
@@ -134,7 +134,7 @@ describe(".emitEventWithArgs", () => {
     );
   });
 
-  it("should pass when the call has emitted the exact matching event", async () => {
+  it("should pass when the call emits the exact matching event", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.emitMessageEvent("Hello World");
 
@@ -146,7 +146,7 @@ describe(".emitEventWithArgs", () => {
     );
   });
 
-  context("Given multiple events are emitted", () => {
+  context("Given multiple events are emitted from transaction", () => {
     it("should not pass when all the same-named events fail arguments assert function", async () => {
       const contractInstance = await TestContract.new();
       const response = await contractInstance.emitTwoMessageEvents(
