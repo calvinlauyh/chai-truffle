@@ -119,10 +119,6 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
     return this;
   });
 
-  property("eventEmitted", function(this: ChaiUse.Assertion) {
-    return assertHasEventEmittedWithAssertion(this);
-  });
-
   method("eventLength", eventLengthAssertFn);
   method("eventLengthOf", eventLengthAssertFn);
 
