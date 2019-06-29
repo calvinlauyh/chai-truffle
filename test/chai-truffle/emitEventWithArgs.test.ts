@@ -166,6 +166,7 @@ describe(".emitEventWithArgs", () => {
       );
     });
 
+    // tslint:disable-next-line:max-line-length
     it("should pass when the first name-matched event fails arguments assert function but the second one passes", async () => {
       const contractInstance = await TestContract.new();
       const response = await contractInstance.emitTwoMessageEvents(
