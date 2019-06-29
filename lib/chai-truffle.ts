@@ -158,13 +158,14 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
 
     const obj: Truffle.TransactionResponse = this._obj;
 
-    const positionOutOfLogsSize = position > obj.logs.length - 1;
+    const objLogSize = obj.logs.length;
+    const positionOutOfLogsSize = position > objLogSize - 1;
     if (positionOutOfLogsSize) {
       if (isNegated(this)) {
         return this;
       }
       throw new Error(
-        `expected transaction to emit event ${expectedEventName} at position ${position}, but none was emitted`,
+        `expected transaction to emit event ${expectedEventName} at position ${position}, but only ${objLogSize} event(s) was emitted`,
       );
     }
     const eventAtTargetPosition = obj.logs[position].event;
@@ -246,13 +247,14 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
     new Assertion(this._obj).to.be.transactionResponse;
     const obj: Truffle.TransactionResponse = this._obj;
 
+    const objLogSize = obj.logs.length;
     const isPositionOutOfLogsSize = position > obj.logs.length - 1;
     if (isPositionOutOfLogsSize) {
       if (isNegated(this)) {
         return this;
       }
       throw new Error(
-        `expected transaction to emit event ${expectedEventName} at position ${position}, but none was emitted`,
+        `expected transaction to emit event ${expectedEventName} at position ${position}, but only ${objLogSize} event(s) are emitted`,
       );
     }
     const targetEventLog = obj.logs[position];
@@ -261,6 +263,8 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
       assertArgsFn(targetEventLog.args),
       `expected transaction to emit event ${expectedEventName} at position ${position} with argument(s) matching assert function, but was not emitted`,
       `expected transaction not to emit event ${expectedEventName} at position ${position} with argument(s) matching assert function, but was emitted`,
+      expectedEventName,
+      targetEventLog.event,
     );
 
     return this;

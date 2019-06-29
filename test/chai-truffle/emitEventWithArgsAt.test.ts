@@ -77,6 +77,16 @@ describe(".not.emitEventWithArgsAt", () => {
       );
     });
 
+    it("should pass when asserting event at out of bounded position", () => {
+      expect(response).not.to.emitEventWithArgsAt(
+        "MessageEvent",
+        (args: Truffle.TransactionLogArgs): boolean => {
+          return args.message === "Call me maybe?";
+        },
+        10,
+      );
+    });
+
     it("should pass when the call emit the exact matching event but at different position", () => {
       expect(response).not.to.emitEventWithArgsAt(
         "MessageEvent",
@@ -119,6 +129,20 @@ describe(".emitEventWithArgsAt", () => {
     beforeEach(async () => {
       const contractInstance = await TestContract.new();
       response = await contractInstance.emitTwoMessageEvents("Hello", "World");
+    });
+
+    it("should not pass when trying to assert events at out of position", () => {
+      expect(() => {
+        expect(response).to.emitEventWithArgsAt(
+          "MessageEvent",
+          (args: Truffle.TransactionLogArgs): boolean => {
+            return args.message === "Hello";
+          },
+          10,
+        );
+      }).to.throw(
+        `expected transaction to emit event MessageEvent at position 10, but only 2 event(s) are emitted`,
+      );
     });
 
     it("should not pass when the call emit the exact matching event but at different position", () => {
