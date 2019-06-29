@@ -11,30 +11,29 @@ declare global {
       extends LanguageChains,
         NumericComparison,
         TypeComparison {
-      evmSuccess(): Assertion;
+      emitEvent(eventName?: string): Assertion;
+      emitEventAt(eventName: string, position: number): Assertion;
+      eventLength(expectedLength: number): Assertion;
+      eventLengthOf(expectedLength: number): Assertion;
       evmFail(errorMessage?: string): Assertion;
       evmOutOfGas(): Assertion;
       evmRevert(): Assertion;
+      evmSuccess(): Assertion;
       transactionResponse: Assertion;
-      eventLength(expectedLength: number): Assertion;
-      eventLengthOf(expectedLength: number): Assertion;
-      eventEmitted: Assertion;
-      emitEvent(eventName?: string): Assertion;
-      emitEventAt(eventName: string, position: number): Assertion;
       withEventArgs(
         assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
       ): Assertion;
     }
 
     interface Assert {
-      evmSuccess<T>(val: T): void;
+      emitEvent<T>(val: T, eventName?: string): void;
+      emitEventAt<T>(val: T, eventName: string, position: number): void;
+      eventLength<T>(val: T, expectedLength: number): void;
+      eventLengthOf<T>(val: T, expectedLength: number): void;
       evmFail<T>(val: T, errorMessage?: string): void;
       evmOutOfGas<T>(val: T): void;
       evmRevert<T>(val: T): void;
-      eventLength<T>(val: T, expectedLength: number): void;
-      eventLengthOf<T>(val: T, expectedLength: number): void;
-      emitEvent<T>(val: T, eventName?: string): void;
-      emitEventAt<T>(val: T, eventName: string, position: number): void;
+      evmSuccess<T>(val: T): void;
       withEventArgs<T>(
         val: T,
         assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
