@@ -30,20 +30,31 @@ describe(".not.emitEvent()", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the call has emitted the specified event", async () => {
+  it("should pass when the call has not emitted any event", async () => {
     const contractInstance = await TestContract.new();
-    const response = await contractInstance.emitTestEvent();
+    const response = await contractInstance.doNothing();
 
-    expect(() => {
-      expect(response).not.to.emitEvent("TestEvent");
-    }).to.throw("expected transaction not to emit event TestEvent, but was emitted");
+    expect(response).not.to.emitEvent();
   });
 
-  it("should pass when the call has not emitted the specified event", async () => {
-    const contractInstance = await TestContract.new();
-    const response = await contractInstance.emitMessageEvent("Hello World");
+  context("Given event name", () => {
+    it("should not pass when the call has emitted the specified event", async () => {
+      const contractInstance = await TestContract.new();
+      const response = await contractInstance.emitTestEvent();
 
-    expect(response).not.to.emitEvent("TestEvent");
+      expect(() => {
+        expect(response).not.to.emitEvent("TestEvent");
+      }).to.throw(
+        "expected transaction not to emit event TestEvent, but was emitted",
+      );
+    });
+
+    it("should pass when the call has not emitted the specified event", async () => {
+      const contractInstance = await TestContract.new();
+      const response = await contractInstance.emitMessageEvent("Hello World");
+
+      expect(response).not.to.emitEvent("TestEvent");
+    });
   });
 });
 
@@ -72,16 +83,27 @@ describe(".emitEvent()", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the call has not emitted the specified event", async () => {
-    const contractInstance = await TestContract.new();
-    const response = await contractInstance.emitMessageEvent("Hello World");
+  context("Given event name", () => {
+    it("should not pass when the call has not emitted the specified event", async () => {
+      const contractInstance = await TestContract.new();
+      const response = await contractInstance.emitMessageEvent("Hello World");
 
-    expect(() => {
+      expect(() => {
+        expect(response).to.emitEvent("TestEvent");
+      }).to.throw(
+        "expected transaction to emit event TestEvent, but was not emitted",
+      );
+    });
+
+    it("should pass when the call has emitted the specified event", async () => {
+      const contractInstance = await TestContract.new();
+      const response = await contractInstance.emitTestEvent();
+
       expect(response).to.emitEvent("TestEvent");
-    }).to.throw("expected transaction to emit event TestEvent, but was not emitted");
+    });
   });
 
-  it("should pass when the call has not emitted the specified event", async () => {
+  it("should pass when the call has emitted an event", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.emitTestEvent();
 
