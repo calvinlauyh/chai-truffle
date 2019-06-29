@@ -5,7 +5,7 @@ const TestContract: TestContract = artifacts.require("Test");
 
 chai.use(chaiTruffle);
 
-describe.only(".not.emitEventWithArgs", () => {
+describe(".not.emitEventWithArgs", () => {
   it("should not pass when provided value is not TransactionResponse", async () => {
     expect(() => {
       expect("Hello World").not.to.emitEventWithArgs("TestEvent", () => true);
@@ -30,59 +30,58 @@ describe.only(".not.emitEventWithArgs", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the call has emitted the same event with arguments matching assert function", async () => {
+  it("should not pass when the call has emitted the exact matching event", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.emitMessageEvent("Hello World");
 
     expect(() => {
-      expect(response).not.to.emitEventWithArgs("MessageEvent", (args: Truffle.TransactionLogArgs): boolean => {
-        return args.message === "Hello World";
-      });
+      expect(response).not.to.emitEventWithArgs(
+        "MessageEvent",
+        (args: Truffle.TransactionLogArgs): boolean => {
+          return args.message === "Hello World";
+        },
+      );
     }).to.throw(
       "expected transaction not to emit event MessageEvent with argument(s) matching assert function, but was emitted",
     );
   });
 
-  // tslint:disable-next-line:max-line-length
-  it("should pass when the call has not emitted the exact same event with arguments matching assert function", async () => {
-    const contractInstance = await TestContract.new();
-    const response = await contractInstance.emitTestEvent();
-
-    expect(response).not.to.emitEventWithArgs("MessageEvent", (args: Truffle.TransactionLogArgs): boolean => {
-      return args.message === "Hello World";
-    });
-  });
-
   context("Given multiple events are emitted", () => {
-    context("When the first name-matched event fails arguments assert function but the second one passes", () => {
-      it("should not pass", async () => {
-        const contractInstance = await TestContract.new();
-        const response = await contractInstance.emitTwoMessageEvents("My code works", "I don't know why");
-
-        expect(() => {
-          expect(response).not.to.emitEventWithArgs("MessageEvent", (args: Truffle.TransactionLogArgs): boolean => {
-            return args.message === "I don't know why";
-          });
-        }).to.throw(
-          "expected transaction not to emit event MessageEvent with argument(s) matching assert function, but was emitted",
-        );
-      });
+    let response: Truffle.TransactionResponse;
+    beforeEach(async () => {
+      const contractInstance = await TestContract.new();
+      response = await contractInstance.emitTwoMessageEvents(
+        "My code works",
+        "I don't know why",
+      );
     });
 
-    context("When all same-named events fail arguments assert function", () => {
-      it("should pass", async () => {
-        const contractInstance = await TestContract.new();
-        const response = await contractInstance.emitTwoMessageEvents("Hello", "World");
+    // tslint:disable-next-line:max-line-length
+    it("should not pass when the first name-matched event fails arguments assert function but the second one passes", () => {
+      expect(() => {
+        expect(response).not.to.emitEventWithArgs(
+          "MessageEvent",
+          (args: Truffle.TransactionLogArgs): boolean => {
+            return args.message === "I don't know why";
+          },
+        );
+      }).to.throw(
+        "expected transaction not to emit event MessageEvent with argument(s) matching assert function, but was emitted",
+      );
+    });
 
-        expect(response).not.to.emitEventWithArgs("MessageEvent", (args: Truffle.TransactionLogArgs): boolean => {
+    it("should pass when none of the events are exact matching", async () => {
+      expect(response).not.to.emitEventWithArgs(
+        "MessageEvent",
+        (args: Truffle.TransactionLogArgs): boolean => {
           return args.message === "Call me maybe?";
-        });
-      });
+        },
+      );
     });
   });
 });
 
-describe.only(".emitEventWithArgs", () => {
+describe(".emitEventWithArgs", () => {
   it("should not pass when provided value is not TransactionResponse", async () => {
     expect(() => {
       expect("Hello World").to.emitEventWithArgs("TestEvent", () => true);
@@ -113,15 +112,18 @@ describe.only(".emitEventWithArgs", () => {
     const response = await contractInstance.emitMessageEvent("Hello World");
 
     expect(() => {
-      expect(response).to.emitEventWithArgs("MessageEvent", (args: Truffle.TransactionLogArgs): boolean => {
-        return args.message === "Call me maybe?";
-      });
+      expect(response).to.emitEventWithArgs(
+        "MessageEvent",
+        (args: Truffle.TransactionLogArgs): boolean => {
+          return args.message === "Call me maybe?";
+        },
+      );
     }).to.throw(
       "expected transaction to emit event MessageEvent with argument(s) matching assert function, but was not emitted",
     );
   });
 
-  it("should not pass when the call has not emitted the event", async () => {
+  it("should not pass when the call has not emitted the exact matching event", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.emitMessageEvent("Hello World");
 
@@ -132,40 +134,51 @@ describe.only(".emitEventWithArgs", () => {
     );
   });
 
-  it("should pass when the call has emitted exactly the same event with arguments", async () => {
+  it("should pass when the call has emitted the exact matching event", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.emitMessageEvent("Hello World");
 
-    expect(response).to.emitEventWithArgs("MessageEvent", (args: Truffle.TransactionLogArgs): boolean => {
-      return args.message === "Hello World";
-    });
+    expect(response).to.emitEventWithArgs(
+      "MessageEvent",
+      (args: Truffle.TransactionLogArgs): boolean => {
+        return args.message === "Hello World";
+      },
+    );
   });
 
   context("Given multiple events are emitted", () => {
-    context("When all same-named events fail arguments assert function", () => {
-      it("should not pass", async () => {
-        const contractInstance = await TestContract.new();
-        const response = await contractInstance.emitTwoMessageEvents("Hello", "World");
+    it("should not pass when all the same-named events fail arguments assert function", async () => {
+      const contractInstance = await TestContract.new();
+      const response = await contractInstance.emitTwoMessageEvents(
+        "Hello",
+        "World",
+      );
 
-        expect(() => {
-          expect(response).to.emitEventWithArgs("MessageEvent", (args: Truffle.TransactionLogArgs): boolean => {
+      expect(() => {
+        expect(response).to.emitEventWithArgs(
+          "MessageEvent",
+          (args: Truffle.TransactionLogArgs): boolean => {
             return args.message === "Call me maybe?";
-          });
-        }).to.throw(
-          "expected transaction to emit event MessageEvent with argument(s) matching assert function, but was not emitted",
+          },
         );
-      });
+      }).to.throw(
+        "expected transaction to emit event MessageEvent with argument(s) matching assert function, but was not emitted",
+      );
     });
 
-    context("When the first name-matched event fails arguments assert function but the second one passes", () => {
-      it("should pass", async () => {
-        const contractInstance = await TestContract.new();
-        const response = await contractInstance.emitTwoMessageEvents("My code works", "I don't know why");
+    it("should pass when the first name-matched event fails arguments assert function but the second one passes", async () => {
+      const contractInstance = await TestContract.new();
+      const response = await contractInstance.emitTwoMessageEvents(
+        "My code works",
+        "I don't know why",
+      );
 
-        expect(response).to.emitEventWithArgs("MessageEvent", (args: Truffle.TransactionLogArgs): boolean => {
+      expect(response).to.emitEventWithArgs(
+        "MessageEvent",
+        (args: Truffle.TransactionLogArgs): boolean => {
           return args.message === "I don't know why";
-        });
-      });
+        },
+      );
     });
   });
 });

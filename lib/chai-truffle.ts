@@ -241,6 +241,35 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
     return this;
   });
 
+  method("emitEventWithArgsAt", function(
+    this: ChaiUse.Assertion,
+    expectedEventName: string,
+    assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+    position: number,
+  ) {
+    new Assertion(this._obj).to.be.transactionResponse;
+    const obj: Truffle.TransactionResponse = this._obj;
+
+    const isPositionOutOfLogsSize = position > obj.logs.length - 1;
+    if (isPositionOutOfLogsSize) {
+      if (isNegated(this)) {
+        return this;
+      }
+      throw new Error(
+        `expected transaction to emit event ${expectedEventName} at position ${position}, but none was emitted`,
+      );
+    }
+    const targetEventLog = obj.logs[position];
+
+    this.assert(
+      assertArgsFn(targetEventLog.args),
+      `expected transaction to emit event ${expectedEventName} at position ${position} with argument(s) matching assert function, but was not emitted`,
+      `expected transaction not to emit event ${expectedEventName} at position ${position} with argument(s) matching assert function, but was emitted`,
+    );
+
+    return this;
+  });
+
   const assertIsPromiseLike = (value: any) => {
     new Assertion(value).assert(
       typeof value.then !== "undefined",

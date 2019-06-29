@@ -36,7 +36,9 @@ describe(".not.emitEvent()", () => {
 
     expect(() => {
       expect(response).not.to.emitEvent("TestEvent");
-    }).to.throw("expected transaction not to emit event TestEvent, but was emitted");
+    }).to.throw(
+      "expected transaction not to emit event TestEvent, but was emitted",
+    );
   });
 
   it("should pass when the call has not emitted the specified event", async () => {
@@ -78,7 +80,9 @@ describe(".emitEvent()", () => {
 
     expect(() => {
       expect(response).to.emitEvent("TestEvent");
-    }).to.throw("expected transaction to emit event TestEvent, but was not emitted");
+    }).to.throw(
+      "expected transaction to emit event TestEvent, but was not emitted",
+    );
   });
 
   it("should pass when the call has not emitted the specified event", async () => {

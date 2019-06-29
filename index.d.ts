@@ -25,6 +25,11 @@ declare global {
         eventName: string,
         assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
       ): Assertion;
+      emitEventWithArgsAt(
+        eventName: string,
+        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+        position: number,
+      ): Assertion;
       withEventArgs(
         assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
       ): Assertion;
@@ -43,6 +48,12 @@ declare global {
         val: T,
         eventName: string,
         assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+      ): void;
+      emitEventWithArgsAt<T>(
+        val: T,
+        eventName: string,
+        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+        position: number,
       ): void;
       withEventArgs<T>(
         val: T,
