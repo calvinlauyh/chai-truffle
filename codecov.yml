@@ -1,2 +1,5 @@
 comment: 
   layout: "diff"
+status:
+  project: false
+  patch: false
