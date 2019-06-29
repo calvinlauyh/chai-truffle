@@ -7,21 +7,6 @@ import { isNil } from "./utils";
 export default (chai: any, utils: ChaiUse.Utils): void => {
   const Assertion: any = chai.Assertion;
 
-  // const overwriteProperty = (
-  //   name: string,
-  //   assertionFn: (assertion: ChaiUse.Assertion) => ChaiUse.Assertion,
-  // ) => {
-  //   Assertion.overwriteProperty(name, (_super: any) => {
-  //     return function(this: ChaiUse.Assertion) {
-  //       if (!isTruffleAssertion(this)) {
-  //         return _super.call(this);
-  //       }
-
-  //       return assertionFn(this);
-  //     };
-  //   });
-  // };
-
   const property = (
     name: string,
     assertFn: (this: ChaiUse.Assertion) => Chai.Assertion,
@@ -225,6 +210,32 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
       assertArgsFn(matchedEventLog.args),
       `expected transaction to emit event ${matchedEventLog.event} with argument(s) matching assert function, but argument(s) do not match`,
       `expected transaction to emit event ${matchedEventLog.event} but not with argument(s) matching assert function, but argument(s) match`,
+    );
+
+    return this;
+  });
+
+  method("emitEventWithArgs", function(
+    this: ChaiUse.Assertion,
+    expectedEventName: string,
+    assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+  ) {
+    new Assertion(this._obj).to.be.transactionResponse;
+
+    const obj: Truffle.TransactionResponse = this._obj;
+
+    const matchedEventLog = obj.logs.find(
+      (log) =>
+        !isNil(log) &&
+        log.event === expectedEventName &&
+        assertArgsFn(log.args),
+    );
+    const hasMatchedEvent = !!matchedEventLog;
+
+    this.assert(
+      hasMatchedEvent,
+      `expected transaction to emit event ${expectedEventName} with argument(s) matching assert function, but was not emitted`,
+      `expected transaction not to emit event ${expectedEventName} with argument(s) matching assert function, but was emitted`,
     );
 
     return this;
