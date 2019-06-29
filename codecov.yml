@@ -1,5 +1,6 @@
 comment: 
   layout: "diff"
-status:
-  project: false
-  patch: false
+coverage:
+  status:
+    project: off
+    patch: off
