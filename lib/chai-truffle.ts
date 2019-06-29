@@ -143,7 +143,7 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
       `expected transaction not to emit event ${expectedEventName}, but was emitted`,
     );
 
-    setEmitEventLogPosition(this, matchedEventLogIndexList);
+    setEmitEventLogPositionList(this, matchedEventLogIndexList);
     updateNegatedBeforeAssertEmitEvent(this);
 
     return this;
@@ -179,7 +179,7 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
       `expected transaction not to emit event ${expectedEventName} at position ${position}, but was emitted`,
     );
 
-    setEmitEventLogPosition(this, [position]);
+    setEmitEventLogPositionList(this, [position]);
     updateNegatedBeforeAssertEmitEvent(this);
 
     return this;
@@ -338,7 +338,7 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
     return !isNil(utils.flag(assertion, "truffleEmitEventLogPositionList"));
   };
 
-  const setEmitEventLogPosition = (
+  const setEmitEventLogPositionList = (
     assertion: ChaiUse.Assertion,
     positionList: number[],
   ) => {
