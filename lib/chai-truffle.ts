@@ -201,7 +201,7 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
     }
 
     const obj: Truffle.TransactionResponse = this._obj;
-    const eventLogPositionList = getEmitEventLogPosition(this);
+    const eventLogPositionList = getEmitEventLogPositionList(this);
 
     const firstMatchedEventLogIndex = eventLogPositionList[0];
     const eventName = obj.logs[firstMatchedEventLogIndex].event;
@@ -351,7 +351,7 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
     }
   };
 
-  const getEmitEventLogPosition = (assertion: ChaiUse.Assertion): number[] => {
+  const getEmitEventLogPositionList = (assertion: ChaiUse.Assertion): number[] => {
     return utils.flag(assertion, "truffleEmitEventLogPositionList");
   };
 
