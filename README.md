@@ -1,5 +1,6 @@
 # Chai Assertions for Truffle
 
+![npm](https://img.shields.io/npm/v/chai-truffle.svg)
 ![Codecov](https://img.shields.io/codecov/c/github/calvinlauco/chai-truffle.svg?token=da31e45005754a838c6e44ce946ed23a)
 ![GitHub](https://img.shields.io/github/license/calvinlauco/chai-truffle.svg)
 
