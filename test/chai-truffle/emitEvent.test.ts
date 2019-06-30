@@ -93,7 +93,7 @@ describe(".emitEvent()", () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.emitTestEvent();
 
-    expect(response).to.emitEvent("TestEvent");
+    expect(response).to.emitEvent();
   });
 
   context("Given event name", () => {
