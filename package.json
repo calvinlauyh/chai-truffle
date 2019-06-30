@@ -1,9 +1,14 @@
 {
   "name": "chai-truffle",
   "version": "0.1.0",
-  "main": "dist/chai-truffle.js",
+  "main": "build/chai-truffle.js",
   "author": "Calvin Lau <calvinlauco@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/calvinlauco/chai-truffle.git"
+  },
   "license": "MIT",
+  "types": "index.d.ts",
   "scripts": {
     "precodecov": "yarn coverage",
     "codecov": "./node_modules/.bin/codecov",
@@ -16,19 +21,22 @@
     "tsc": "./node_modules/.bin/tsc",
     "truffle": "./node_modules/.bin/truffle",
     "prettier": "./node_modules/.bin/prettier '{src,test}/**/*.ts' --write",
-    "tslint": "./node_modules/.bin/tslint --format verbose '{src,test}/**/*.ts'"
+    "tslint": "./node_modules/.bin/tslint --format verbose '{src,test}/**/*.ts'",
+    "prepublis": "yarn build",
+    "publish": ""
   },
-  "dependencies": {
-    "@types/bignumber.js": "^5.0.0",
-    "@types/bn.js": "^4.11.5",
-    "@types/chai": "^4.1.7",
-    "chai": "^4.2.0"
+  "peerDependencies": {
+    "chai": ">= 1.0.0 < 5"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
+    "@types/bignumber.js": "^5.0.0",
+    "@types/bn.js": "^4.11.5",
+    "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "^7.1.0",
     "@types/mocha": "^5.2.7",
     "@types/web3": "^1.0.18",
+    "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "codecov": "^3.5.0",
     "mocha": "^6.1.4",

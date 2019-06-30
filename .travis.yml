@@ -23,6 +23,16 @@ jobs:
     - stage: Coverage Report
       script:
         - yarn codecov
+    - stage: Publish to NPM
+      script: yarn build
+      deploy:
+        provider: npm
+        email: calvinlauco@gmail.com
+        api_key: $NPM_AUTH_TOKEN
+        on:
+          branch: master
+          tags: true
+      if: type = push
 branches:
   only:
     - master
