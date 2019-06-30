@@ -89,6 +89,13 @@ describe(".emitEvent()", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
+  it("should pass when the call has emitted an event", async () => {
+    const contractInstance = await TestContract.new();
+    const response = await contractInstance.emitTestEvent();
+
+    expect(response).to.emitEvent();
+  });
+
   context("Given event name", () => {
     it("should not pass when the call has not emitted the specified event", async () => {
       const contractInstance = await TestContract.new();
@@ -107,12 +114,5 @@ describe(".emitEvent()", () => {
 
       expect(response).to.emitEvent("TestEvent");
     });
-  });
-
-  it("should pass when the call has emitted an event", async () => {
-    const contractInstance = await TestContract.new();
-    const response = await contractInstance.emitTestEvent();
-
-    expect(response).to.emitEvent("TestEvent");
   });
 });

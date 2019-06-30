@@ -132,18 +132,18 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
     new Assertion(this._obj).to.be.transactionResponse;
 
     const obj: Truffle.TransactionResponse = this._obj;
-    const targetEventLogIndex = obj.logs.findIndex(
+    const matchedEventLogIndexList = obj.logs.filter(
       (log) => !isNil(log.event) && log.event === expectedEventName,
-    );
-    const hasTargetEventEmitted = targetEventLogIndex !== -1;
+    ).map((log) => log.logIndex);
+    const hasMatchedEvent = matchedEventLogIndexList.length !== 0;
 
     this.assert(
-      hasTargetEventEmitted,
+      hasMatchedEvent,
       `expected transaction to emit event ${expectedEventName}, but was not emitted`,
       `expected transaction not to emit event ${expectedEventName}, but was emitted`,
     );
 
-    setEmitEventLogPosition(this, targetEventLogIndex);
+    setEmitEventLogPositionList(this, matchedEventLogIndexList);
     updateNegatedBeforeAssertEmitEvent(this);
 
     return this;
@@ -179,7 +179,7 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
       `expected transaction not to emit event ${expectedEventName} at position ${position}, but was emitted`,
     );
 
-    setEmitEventLogPosition(this, position);
+    setEmitEventLogPositionList(this, [position]);
     updateNegatedBeforeAssertEmitEvent(this);
 
     return this;
@@ -201,13 +201,21 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
     }
 
     const obj: Truffle.TransactionResponse = this._obj;
-    const eventLogPosition = getEmitEventLogPosition(this);
-    const matchedEventLog = obj.logs[eventLogPosition];
+    const eventLogPositionList = getEmitEventLogPositionList(this);
+
+    const firstMatchedEventLogIndex = eventLogPositionList[0];
+    const eventName = obj.logs[firstMatchedEventLogIndex].event;
+
+    const matchedEventPosition = eventLogPositionList.find((position) => {
+      const eventLog = obj.logs[position];
+      return assertArgsFn(eventLog.args);
+    });
+    const hasMatchedEvent = typeof matchedEventPosition !== "undefined";
 
     this.assert(
-      assertArgsFn(matchedEventLog.args),
-      `expected transaction to emit event ${matchedEventLog.event} with argument(s) matching assert function, but argument(s) do not match`,
-      `expected transaction to emit event ${matchedEventLog.event} but not with argument(s) matching assert function, but argument(s) match`,
+      hasMatchedEvent,
+      `expected transaction to emit event ${eventName} with argument(s) matching assert function, but argument(s) do not match`,
+      `expected transaction to emit event ${eventName} but not with argument(s) matching assert function, but argument(s) match`,
     );
 
     return this;
@@ -327,14 +335,14 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
   };
 
   const isEmitEventAsserted = (assertion: ChaiUse.Assertion): boolean => {
-    return !isNil(utils.flag(assertion, "truffleEmitEventLogPosition"));
+    return !isNil(utils.flag(assertion, "truffleEmitEventLogPositionList"));
   };
 
-  const setEmitEventLogPosition = (
+  const setEmitEventLogPositionList = (
     assertion: ChaiUse.Assertion,
-    position: number,
+    positionList: number[],
   ) => {
-    utils.flag(assertion, "truffleEmitEventLogPosition", position);
+    utils.flag(assertion, "truffleEmitEventLogPositionList", positionList);
   };
 
   const updateNegatedBeforeAssertEmitEvent = (assertion: ChaiUse.Assertion) => {
@@ -343,8 +351,8 @@ export default (chai: any, utils: ChaiUse.Utils): void => {
     }
   };
 
-  const getEmitEventLogPosition = (assertion: ChaiUse.Assertion): number => {
-    return utils.flag(assertion, "truffleEmitEventLogPosition");
+  const getEmitEventLogPositionList = (assertion: ChaiUse.Assertion): number[] => {
+    return utils.flag(assertion, "truffleEmitEventLogPositionList");
   };
 
   function eventLengthAssertFn(

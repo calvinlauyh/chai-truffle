@@ -34,7 +34,7 @@ describe(".not.emitEventWithArgsAt", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  context("Given multiple events are emitted", () => {
+  context("Given multiple events are emitted from transaction", () => {
     let response: Truffle.TransactionResponse;
     beforeEach(async () => {
       const contractInstance = await TestContract.new();
@@ -124,7 +124,7 @@ describe(".emitEventWithArgsAt", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  context("Given multiple events are emitted", () => {
+  context("Given multiple events are emitted from transaction", () => {
     let response: Truffle.TransactionResponse;
     beforeEach(async () => {
       const contractInstance = await TestContract.new();
@@ -145,7 +145,7 @@ describe(".emitEventWithArgsAt", () => {
       );
     });
 
-    it("should not pass when the call emit the exact matching event but at different position", () => {
+    it("should not pass when the call emits the exact matching event but at different position", () => {
       expect(() => {
         expect(response).to.emitEventWithArgsAt(
           "MessageEvent",
@@ -159,7 +159,7 @@ describe(".emitEventWithArgsAt", () => {
       );
     });
 
-    it("should not pass when the call emit a different event at target position", () => {
+    it("should not pass when the call emits a different event at target position", () => {
       expect(() => {
         expect(response).to.emitEventWithArgsAt(
           "TestEvent",
@@ -174,7 +174,7 @@ describe(".emitEventWithArgsAt", () => {
     });
 
     // tslint:disable-next-line:max-line-length
-    it("should not pass when the call emit the same event but with arguments not matching assert function at target position", () => {
+    it("should not pass when the call emits the same event but with arguments not matching assert function at target position", () => {
       expect(() => {
         expect(response).to.emitEventWithArgsAt(
           "MessageEvent",
@@ -189,7 +189,7 @@ describe(".emitEventWithArgsAt", () => {
     });
 
     // tslint:disable-next-line:max-line-length
-    it("should pass when the call has emitted the exact matching event at target position", async () => {
+    it("should pass when the call emits the exact matching event at target position", async () => {
       expect(response).to.emitEventWithArgsAt(
         "MessageEvent",
         (args: Truffle.TransactionLogArgs): boolean => {
