@@ -238,10 +238,9 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
 
     const hasMatchedEventLogs = matchedEventLogs.length !== 0;
     if (!hasMatchedEventLogs) {
-      this.assert(
-        false,
+      failAssertion(
+        this,
         `expected transaction to emit event ${expectedEventName} with matching argument(s), but was not emitted`,
-        "",
       );
       return this;
     }
@@ -278,14 +277,25 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
         `expected transaction to emit event ${expectedEventName} at position ${position}, but only ${objLogSize} event(s) are emitted`,
       );
     }
+
     const targetEventLog = obj.logs[position];
 
-    this.assert(
-      assertArgsFn(targetEventLog.args),
-      `expected transaction to emit event ${expectedEventName} at position ${position} with argument(s) matching assert function, but was not emitted`,
-      `expected transaction not to emit event ${expectedEventName} at position ${position} with argument(s) matching assert function, but was emitted`,
-      expectedEventName,
-      targetEventLog.event,
+    if (targetEventLog.event !== expectedEventName) {
+      failAssertion(
+        this,
+        `expected transaction to emit event ${expectedEventName} at position ${position} with matching argument(s), but was not emitted`,
+      );
+      return this;
+    }
+
+    const errorMessagePrefix = `expected transaction to emit event ${expectedEventName} at position ${position} with matching argument(s)`;
+    const negatedErrorMessage = `expected transaction not to emit event ${expectedEventName} at position ${position} with matching argument(s), but was emitted`;
+    assertEmitEventWithArgsFromMatchedEventLogs(
+      this,
+      [targetEventLog],
+      assertArgsFn,
+      errorMessagePrefix,
+      negatedErrorMessage,
     );
 
     return this;

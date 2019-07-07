@@ -123,7 +123,7 @@ describe.only(".emitEventWithArgs", () => {
       );
     });
 
-    it("should not pass with error message when arguments assert function throws Error", async () => {
+    it("should not pass with thrown error message when arguments assert function throws Error", async () => {
       const contractInstance = await TestContract.new();
       const response = await contractInstance.emitMessageEvent("Hello World");
 
