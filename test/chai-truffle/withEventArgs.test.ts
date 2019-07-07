@@ -55,7 +55,7 @@ describe.only("not.withEventArgs", () => {
           return args.message === "Hello World";
         });
     }).to.throw(
-      "expected transaction to emit event MessageEvent but not with argument(s) matching assert function, but argument(s) match",
+      "expected transaction to emit event MessageEvent but not with matching argument(s), but argument(s) match",
     );
   });
 
@@ -86,7 +86,7 @@ describe.only("not.withEventArgs", () => {
             return args.message === "World";
           });
       }).to.throw(
-        "expected transaction to emit event MessageEvent but not with argument(s) matching assert function, but argument(s) match",
+        "expected transaction to emit event MessageEvent but not with matching argument(s), but argument(s) match",
       );
     });
 
@@ -131,7 +131,7 @@ describe.only("withEventArgs", () => {
     );
   });
 
-  context("Call has emitted same event but with mismatch arguments", () => {
+  context("Call emits same event but with mismatched arguments", () => {
     it("should not pass when arguments not matching assert function", async () => {
       const contractInstance = await TestContract.new();
       const response = await contractInstance.emitMessageEvent("Hello World");
