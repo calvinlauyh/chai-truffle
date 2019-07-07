@@ -23,7 +23,7 @@ describe(".not.evmOutOfGas()", () => {
       expect(contractInstance.drainGas({
         gas: 30000,
       })).not.to.evmOutOfGas(),
-      "expected transaction not to fail in EVM because of out of gas, but it was",
+      "expected transaction not to fail in EVM because of 'out of gas', but it was",
     );
   });
 });
@@ -33,7 +33,7 @@ describe(".evmOutOfGas()", () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.doNothing()).to.evmOutOfGas(),
-      "expected transaction to fail in EVM because of out of gas, but it succeeded",
+      "expected transaction to fail in EVM because of 'out of gas', but it succeeded",
     );
   });
 
@@ -41,7 +41,7 @@ describe(".evmOutOfGas()", () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.revertImmediately()).to.evmOutOfGas(),
-      "expected transaction to fail in EVM because of out of gas, but it failed of another reason",
+      "expected transaction to fail in EVM because of 'out of gas', but it failed of another reason",
     );
   });
 

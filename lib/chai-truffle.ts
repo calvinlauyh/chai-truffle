@@ -221,7 +221,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
         // then it should fail.
         const failMessage = isNil(expectedErrorMessage)
           ? "expected transaction to fail in EVM, but it succeeded"
-          : `expected transaction to fail in EVM because of ${expectedErrorMessage}, but it succeeded`;
+          : `expected transaction to fail in EVM because of '${expectedErrorMessage}', but it succeeded`;
         failAssertion(this, failMessage, {
           actual: result,
         });
@@ -240,10 +240,11 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
             },
           );
         } else {
+          const isErrorMessageMatch = err.message.indexOf(expectedErrorMessage as string) !== -1;
           this.assert(
-            err.message.indexOf(expectedErrorMessage as string) !== -1,
-            `expected transaction to fail in EVM because of ${expectedErrorMessage}, but it failed of another reason`,
-            `expected transaction not to fail in EVM because of ${expectedErrorMessage}, but it was`,
+            isErrorMessageMatch,
+            `expected transaction to fail in EVM because of '${expectedErrorMessage}', but it failed of another reason`,
+            `expected transaction not to fail in EVM because of '${expectedErrorMessage}', but it was`,
             expectedErrorMessage,
             err,
           );

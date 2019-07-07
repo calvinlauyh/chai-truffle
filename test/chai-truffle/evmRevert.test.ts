@@ -25,7 +25,7 @@ describe(".not.evmRevert()", () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.revertImmediately()).not.to.evmRevert(),
-      "expected transaction not to fail in EVM because of revert, but it was",
+      "expected transaction not to fail in EVM because of 'revert', but it was",
     );
   });
 });
@@ -35,7 +35,7 @@ describe(".evmRevert()", () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.doNothing()).to.evmRevert(),
-      "expected transaction to fail in EVM because of revert, but it succeeded",
+      "expected transaction to fail in EVM because of 'revert', but it succeeded",
     );
   });
 
@@ -47,7 +47,7 @@ describe(".evmRevert()", () => {
           gas: 30000,
         }),
       ).to.evmRevert(),
-      "expected transaction to fail in EVM because of revert, but it failed of another reason",
+      "expected transaction to fail in EVM because of 'revert', but it failed of another reason",
     );
   });
 

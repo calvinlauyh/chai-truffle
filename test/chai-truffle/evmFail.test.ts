@@ -40,6 +40,15 @@ describe(".not.evmFail()", () => {
     );
   });
 
+  it("should fail when the call fails in EVM with provided reason", async () => {
+    const contractInstance = await TestContract.new();
+
+    return assertPromiseShouldReject(
+      expect(contractInstance.revertImmediately()).not.to.evmFail("revert"),
+      "expected transaction not to fail in EVM because of 'revert', but it was",
+    );
+  });
+
   it("should pass when the call succeeds in EVM", async () => {
     const contractInstance = await TestContract.new();
     return expect(contractInstance.doNothing()).not.to.evmFail();
@@ -61,6 +70,15 @@ describe(".evmFail()", () => {
     );
   });
 
+  it("should fail when the call fails in EVM but of another reason", async () => {
+    const contractInstance = await TestContract.new();
+
+    return assertPromiseShouldReject(
+      expect(contractInstance.revertImmediately()).to.evmFail("It fails, I don't know why"),
+      "expected transaction to fail in EVM because of 'It fails, I don't know why', but it failed of another reason",
+    );
+  });
+
   it("should pass when the call has missing argument", async () => {
     const contractInstance = await TestContract.new();
     return expect(contractInstance.emitMessageEvent()).to.evmFail();
@@ -69,7 +87,7 @@ describe(".evmFail()", () => {
   it("should pass when the call runs out of gas in EVM", async () => {
     const contractInstance = await TestContract.new();
 
-    expect(
+    return expect(
       contractInstance.drainGas({
         gas: 30000,
       }),
@@ -79,6 +97,6 @@ describe(".evmFail()", () => {
   it("should pass when the call gets reverted in EVM", async () => {
     const contractInstance = await TestContract.new();
 
-    expect(contractInstance.revertImmediately()).to.evmFail();
+    return expect(contractInstance.revertImmediately()).to.evmFail();
   });
 });

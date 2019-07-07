@@ -232,7 +232,7 @@ describe(".emitEventWithArgsAt", () => {
           return;
         }
 
-        throw new Error("Should have thrown an Error");
+        throw new Error("Should thrown Error");
       });
     });
 

@@ -81,6 +81,6 @@ describe(".evmSuccess()", () => {
   it("should pass when the call succeeds in EVM", async () => {
     const contractInstance = await TestContract.new();
 
-    expect(contractInstance.doNothing()).to.evmSuccess();
+    return expect(contractInstance.doNothing()).to.evmSuccess();
   });
 });
