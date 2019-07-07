@@ -14,7 +14,7 @@
             true,
             {
                 "limit": 120,
-                "ignore-pattern": "^\\s*\"(.+)\"[\\.,;]$|^\\s*`(.+)`[\\.,;]$"
+                "ignore-pattern": "\"[\\.,;]$|`[\\.,;]$"
             }
         ],
         "no-unused-expression":false,
