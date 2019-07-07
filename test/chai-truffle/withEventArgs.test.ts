@@ -5,7 +5,7 @@ const TestContract: TestContract = artifacts.require("Test");
 
 chai.use(chaiTruffle);
 
-describe("not.withEventArgs", () => {
+describe.only("not.withEventArgs", () => {
   it("should not pass when the assertion does not call emitEvent before", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.doNothing();
@@ -106,7 +106,7 @@ describe("not.withEventArgs", () => {
   });
 });
 
-describe("withEventArgs", () => {
+describe.only("withEventArgs", () => {
   it("should not pass when the assertion does not call emitEvent before", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.doNothing();
@@ -131,19 +131,62 @@ describe("withEventArgs", () => {
     );
   });
 
-  it("should not pass when the call emits same event but with arguments not matching assert function", async () => {
-    const contractInstance = await TestContract.new();
-    const response = await contractInstance.emitMessageEvent("Hello World");
+  context("Call has emitted same event but with mismatch arguments", () => {
+    it("should not pass when arguments not matching assert function", async () => {
+      const contractInstance = await TestContract.new();
+      const response = await contractInstance.emitMessageEvent("Hello World");
 
-    expect(() => {
-      expect(response)
-        .to.emitEvent("MessageEvent")
-        .withEventArgs((args: Truffle.TransactionLogArgs): boolean => {
-          return args.message === "Call me maybe?";
-        });
-    }).to.throw(
-      "expected transaction to emit event MessageEvent with argument(s) matching assert function, but argument(s) do not match",
-    );
+      expect(() => {
+        expect(response)
+          .to.emitEvent("MessageEvent")
+          .withEventArgs((args: Truffle.TransactionLogArgs): boolean => {
+            return args.message === "Call me maybe?";
+          });
+      }).to.throw(
+        "expected transaction to emit event MessageEvent with matching argument(s), but argument(s) do not match",
+      );
+    });
+
+    it("should not pass with thrown error message when arguments assert function throws Error", async () => {
+      const contractInstance = await TestContract.new();
+      const response = await contractInstance.emitMessageEvent("Hello World");
+
+      expect(() => {
+        expect(response)
+          .to.emitEvent("MessageEvent")
+          .withEventArgs(() => {
+            throw new Error("Arguments does not match");
+          });
+      }).to.throw(
+        "expected transaction to emit event MessageEvent with matching argument(s), but argument(s) assert function got: Arguments does not match",
+      );
+    });
+
+    // tslint:disable-next-line:max-line-length
+    it("should not pass with AssertionError with expected and actual values when arguments assert function throws AssertionError", async () => {
+      const contractInstance = await TestContract.new();
+      const response = await contractInstance.emitMessageEvent("Hello World");
+
+      try {
+        expect(response)
+          .to.emitEvent("MessageEvent")
+          .withEventArgs((): boolean => {
+            expect("Hello").to.eq("World");
+            return false;
+          });
+      } catch (err) {
+        expect(err).to.be.instanceOf(chai.AssertionError);
+        expect(err.message).to.eq(
+          "expected transaction to emit event MessageEvent with matching argument(s), but argument(s) assert function got: expected 'Hello' to equal 'World'",
+        );
+        expect(err.expected).to.eq("World");
+        expect(err.actual).to.eq("Hello");
+
+        return;
+      }
+
+      throw new Error("Should have thrown an Error");
+    });
   });
 
   it("should pass when the call emits the exact same event", async () => {
@@ -172,7 +215,7 @@ describe("withEventArgs", () => {
             return args.message === "Call me maybe?";
           });
       }).to.throw(
-        "expected transaction to emit event MessageEvent with argument(s) matching assert function, but argument(s) do not match",
+        "expected transaction to emit event MessageEvent with matching argument(s), but argument(s) do not match",
       );
     });
 

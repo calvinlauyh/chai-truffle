@@ -132,9 +132,9 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     new Assertion(this._obj).to.be.transactionResponse;
 
     const obj: Truffle.TransactionResponse = this._obj;
-    const matchedEventLogIndexList = obj.logs.filter(
-      (log) => !isNil(log.event) && log.event === expectedEventName,
-    ).map((log) => log.logIndex);
+    const matchedEventLogIndexList = obj.logs
+      .filter((log) => !isNil(log.event) && log.event === expectedEventName)
+      .map((log) => log.logIndex);
     const hasMatchedEvent = matchedEventLogIndexList.length !== 0;
 
     this.assert(
@@ -206,16 +206,39 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     const firstMatchedEventLogIndex = eventLogPositionList[0];
     const eventName = obj.logs[firstMatchedEventLogIndex].event;
 
-    const matchedEventPosition = eventLogPositionList.find((position) => {
+    let hasMatchedEvent = false;
+    let lastError: Error | undefined;
+    for (const position of eventLogPositionList) {
       const eventLog = obj.logs[position];
-      return assertArgsFn(eventLog.args);
-    });
-    const hasMatchedEvent = typeof matchedEventPosition !== "undefined";
+      try {
+        if (assertArgsFn(eventLog.args)) {
+          hasMatchedEvent = true;
+          break;
+        }
+      } catch (err) {
+        lastError = err;
+      }
+    }
+
+    let errorMessage = `expected transaction to emit event ${eventName} with matching argument(s)`;
+    const assertionValue: FailAssertionValue = {};
+    if (typeof lastError === "undefined") {
+      errorMessage = `${errorMessage}, but argument(s) do not match`;
+    } else {
+      errorMessage = `${errorMessage}, but argument(s) assert function got: ${lastError.message}`;
+      if (lastError instanceof chai.AssertionError) {
+        const assertionError = lastError as unknown as ChaiAssertionError;
+        assertionValue.expected = assertionError.expected;
+        assertionValue.actual = assertionError.actual;
+      }
+    }
 
     this.assert(
       hasMatchedEvent,
-      `expected transaction to emit event ${eventName} with argument(s) matching assert function, but argument(s) do not match`,
+      errorMessage,
       `expected transaction to emit event ${eventName} but not with argument(s) matching assert function, but argument(s) match`,
+      assertionValue.expected,
+      assertionValue.actual,
     );
 
     return this;
@@ -351,7 +374,9 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     }
   };
 
-  const getEmitEventLogPositionList = (assertion: ChaiUse.Assertion): number[] => {
+  const getEmitEventLogPositionList = (
+    assertion: ChaiUse.Assertion,
+  ): number[] => {
     return utils.flag(assertion, "truffleEmitEventLogPositionList");
   };
 
@@ -399,6 +424,11 @@ const failAssertion = (
   assertion.assert(false, message, "", value.expected, value.actual);
 };
 interface FailAssertionValue {
+  expected?: any;
+  actual?: any;
+}
+
+type ChaiAssertionError = typeof Chai.AssertionError & {
   expected?: any;
   actual?: any;
 }
