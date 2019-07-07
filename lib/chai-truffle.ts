@@ -4,7 +4,7 @@
 
 import { isNil } from "./utils";
 
-export default (chai: any, utils: ChaiUse.Utils): void => {
+export = (chai: any, utils: ChaiUse.Utils): void => {
   const Assertion: any = chai.Assertion;
 
   const property = (
