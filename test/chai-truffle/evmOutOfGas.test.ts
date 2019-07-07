@@ -17,7 +17,7 @@ describe(".not.evmOutOfGas()", () => {
     return expect(contractInstance.revertImmediately()).not.to.evmOutOfGas();
   });
 
-  it("should not pass when the call runs out of gas in EVM", async () => {
+  it("should fail when the call runs out of gas in EVM", async () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.drainGas({
@@ -29,7 +29,7 @@ describe(".not.evmOutOfGas()", () => {
 });
 
 describe(".evmOutOfGas()", () => {
-  it("should not pass when the call succeeds in EVM", async () => {
+  it("should fail when the call succeeds in EVM", async () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.doNothing()).to.evmOutOfGas(),
@@ -37,7 +37,7 @@ describe(".evmOutOfGas()", () => {
     );
   });
 
-  it("should not pass when the call gets reverted in EVM but not because of out of gas", async () => {
+  it("should fail when the call gets reverted in EVM but not because of out of gas", async () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.revertImmediately()).to.evmOutOfGas(),

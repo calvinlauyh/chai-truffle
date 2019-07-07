@@ -21,7 +21,7 @@ describe(".not.evmRevert()", () => {
     ).not.to.evmRevert();
   });
 
-  it("should not pass when the call gets reverted in EVM", async () => {
+  it("should fail when the call gets reverted in EVM", async () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.revertImmediately()).not.to.evmRevert(),
@@ -31,7 +31,7 @@ describe(".not.evmRevert()", () => {
 });
 
 describe(".evmRevert()", () => {
-  it("should not pass when the call succeeds in EVM", async () => {
+  it("should fail when the call succeeds in EVM", async () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.doNothing()).to.evmRevert(),
@@ -39,7 +39,7 @@ describe(".evmRevert()", () => {
     );
   });
 
-  it("should not pass when the call runs out of gas in EVM but not because of getting reverted", async () => {
+  it("should fail when the call runs out of gas in EVM but not because of getting reverted", async () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(

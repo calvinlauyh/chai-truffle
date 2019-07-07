@@ -5,14 +5,14 @@ const TestContract: TestContract = artifacts.require("Test");
 
 chai.use(chaiTruffle);
 
-describe.only(".not.emitEventWithArgs", () => {
-  it("should not pass when provided value is not TransactionResponse", async () => {
+describe(".not.emitEventWithArgs", () => {
+  it("should fail when provided value is not TransactionResponse", async () => {
     expect(() => {
       expect("Hello World").not.to.emitEventWithArgs("TestEvent", () => true);
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the call is reading a state", async () => {
+  it("should fail when the call is reading a state", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.eventId();
 
@@ -21,7 +21,7 @@ describe.only(".not.emitEventWithArgs", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the call is calling a view function", async () => {
+  it("should fail when the call is calling a view function", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.nextEventId();
 
@@ -30,7 +30,7 @@ describe.only(".not.emitEventWithArgs", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the call has emitted the exact matching event", async () => {
+  it("should fail when the call has emitted the exact matching event", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.emitMessageEvent("Hello World");
 
@@ -46,7 +46,7 @@ describe.only(".not.emitEventWithArgs", () => {
     );
   });
 
-  context("Given multiple events are emitted from transaction", () => {
+  context("Given multiple MessageEvents are emitted from transaction", () => {
     let response: Truffle.TransactionResponse;
     beforeEach(async () => {
       const contractInstance = await TestContract.new();
@@ -57,7 +57,7 @@ describe.only(".not.emitEventWithArgs", () => {
     });
 
     // tslint:disable-next-line:max-line-length
-    it("should not pass when the first name-matched event fails arguments assert function but the second one passes", () => {
+    it("should fail when the first name-matched event has mismatched arguments but the second one matches", () => {
       expect(() => {
         expect(response).not.to.emitEventWithArgs(
           "MessageEvent",
@@ -81,14 +81,14 @@ describe.only(".not.emitEventWithArgs", () => {
   });
 });
 
-describe.only(".emitEventWithArgs", () => {
-  it("should not pass when provided value is not TransactionResponse", async () => {
+describe(".emitEventWithArgs", () => {
+  it("should fail when provided value is not TransactionResponse", async () => {
     expect(() => {
       expect("Hello World").to.emitEventWithArgs("TestEvent", () => true);
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the call is reading a state", async () => {
+  it("should fail when the call is reading a state", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.eventId();
 
@@ -97,7 +97,7 @@ describe.only(".emitEventWithArgs", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the call is calling a view function", async () => {
+  it("should fail when the call is calling a view function", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.nextEventId();
 
@@ -106,8 +106,8 @@ describe.only(".emitEventWithArgs", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  context("Call emits same event but with mismatched arguments", () => {
-    it("should not pass when arguments assert function return false", async () => {
+  context("Call emits name-matched event but with mismatched arguments", () => {
+    it("should fail when arguments assert function return false", async () => {
       const contractInstance = await TestContract.new();
       const response = await contractInstance.emitMessageEvent("Hello World");
 
@@ -123,7 +123,7 @@ describe.only(".emitEventWithArgs", () => {
       );
     });
 
-    it("should not pass with thrown error message when arguments assert function throws Error", async () => {
+    it("should fail with thrown error message when arguments assert function throws Error", async () => {
       const contractInstance = await TestContract.new();
       const response = await contractInstance.emitMessageEvent("Hello World");
 
@@ -137,7 +137,7 @@ describe.only(".emitEventWithArgs", () => {
     });
 
     // tslint:disable-next-line:max-line-length
-    it("should not pass with AssertionError with expected and actual values when arguments assert function throws AssertionError", async () => {
+    it("should fail with AssertionError with expected and actual values when arguments assert function throws AssertionError", async () => {
       const contractInstance = await TestContract.new();
       const response = await contractInstance.emitMessageEvent("Hello World");
 
@@ -161,7 +161,7 @@ describe.only(".emitEventWithArgs", () => {
     });
   });
 
-  it("should not pass when the call does not emit the exact matching event", async () => {
+  it("should fail when the call does not emit the name-matched event", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.emitMessageEvent("Hello World");
 
@@ -184,8 +184,8 @@ describe.only(".emitEventWithArgs", () => {
     );
   });
 
-  context("Given multiple events are emitted from transaction", () => {
-    it("should not pass when all the same-named events has arguments assert function return false", async () => {
+  context("Given multiple MessageEvents are emitted from transaction", () => {
+    it("should fail when all the name-matched events has arguments assert function returns false", async () => {
       const contractInstance = await TestContract.new();
       const response = await contractInstance.emitTwoMessageEvents(
         "Hello",
@@ -205,7 +205,7 @@ describe.only(".emitEventWithArgs", () => {
     });
 
     // tslint:disable-next-line:max-line-length
-    it("should pass when the first name-matched event fails arguments assert function but the second one passes", async () => {
+    it("should pass when the first name-matched event has mismatched arguments but seconds one matches", async () => {
       const contractInstance = await TestContract.new();
       const response = await contractInstance.emitTwoMessageEvents(
         "My code works",

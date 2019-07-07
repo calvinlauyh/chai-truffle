@@ -6,13 +6,13 @@ const TestContract: TestContract = artifacts.require("Test");
 chai.use(chaiTruffle);
 
 describe("not.eventLength", () => {
-  it("should not pass when provided value is not a TransactionResponse", async () => {
+  it("should fail when provided value is not a TransactionResponse", async () => {
     expect(() => {
       expect("Hello World").not.to.have.eventLength(2);
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the length of event log matches the provided length", async () => {
+  it("should fail when the length of event log matches the provided length", async () => {
     const contractInstance = await TestContract.new();
 
     const response = await contractInstance.emitDefaultMessageAndTestEvents();
@@ -30,13 +30,13 @@ describe("not.eventLength", () => {
 });
 
 describe("eventLength", () => {
-  it("should not pass when provided value is not a TransactionResponse", async () => {
+  it("should fail when provided value is not a TransactionResponse", async () => {
     expect(() => {
       expect("Hello World").to.have.eventLength(2);
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the length of event log is different from the provided length", async () => {
+  it("should fail when the length of event log is different from the provided length", async () => {
     const contractInstance = await TestContract.new();
 
     const response = await contractInstance.emitDefaultMessageAndTestEvents();

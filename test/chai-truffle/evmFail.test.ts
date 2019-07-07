@@ -7,13 +7,13 @@ const TestContract: TestContract = artifacts.require("Test");
 chai.use(chaiTruffle);
 
 describe(".not.evmFail()", () => {
-  it("should not pass when the object is not a promise", () => {
+  it("should fail when the object is not a promise", () => {
     expect(() => {
       expect("Hello world").not.to.evmFail();
     }).to.throw("expected 'Hello world' to be a Promise");
   });
 
-  it("should not pass when the call runs out of gas in EVM", async () => {
+  it("should fail when the call runs out of gas in EVM", async () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(
@@ -25,7 +25,7 @@ describe(".not.evmFail()", () => {
     );
   });
 
-  it("should not pass when the call get reverted in EVM", async () => {
+  it("should fail when the call get reverted in EVM", async () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.revertImmediately()).not.to.evmFail(),
@@ -33,7 +33,7 @@ describe(".not.evmFail()", () => {
     );
   });
 
-  it("should not pass when the promise resolve to non-transaction response", () => {
+  it("should fail when the promise resolve to non-transaction response", () => {
     return assertPromiseShouldReject(
       expect(Promise.resolve("Hello world")).not.to.evmFail(),
       "expected 'Hello world' to be a Truffle TransactionResponse",
@@ -47,13 +47,13 @@ describe(".not.evmFail()", () => {
 });
 
 describe(".evmFail()", () => {
-  it("should not pass when the object is not a promise", () => {
+  it("should fail when the object is not a promise", () => {
     expect(() => {
       expect("Hello world").to.evmFail();
     }).to.throw("expected 'Hello world' to be a Promise");
   });
 
-  it("should not pass when the call succeeds in EVM", async () => {
+  it("should fail when the call succeeds in EVM", async () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.doNothing()).to.evmFail(),
