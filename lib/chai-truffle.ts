@@ -206,39 +206,18 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     const firstMatchedEventLogIndex = eventLogPositionList[0];
     const eventName = obj.logs[firstMatchedEventLogIndex].event;
 
-    let hasMatchedEvent = false;
-    let lastError: Error | undefined;
-    for (const position of eventLogPositionList) {
-      const eventLog = obj.logs[position];
-      try {
-        if (assertArgsFn(eventLog.args)) {
-          hasMatchedEvent = true;
-          break;
-        }
-      } catch (err) {
-        lastError = err;
-      }
-    }
+    const matchedEventLogs = eventLogPositionList.map(
+      (position) => obj.logs[position],
+    );
 
-    let errorMessage = `expected transaction to emit event ${eventName} with matching argument(s)`;
-    const assertionValue: FailAssertionValue = {};
-    if (typeof lastError === "undefined") {
-      errorMessage = `${errorMessage}, but argument(s) do not match`;
-    } else {
-      errorMessage = `${errorMessage}, but argument(s) assert function got: ${lastError.message}`;
-      if (lastError instanceof chai.AssertionError) {
-        const assertionError = lastError as unknown as ChaiAssertionError;
-        assertionValue.expected = assertionError.expected;
-        assertionValue.actual = assertionError.actual;
-      }
-    }
-
-    this.assert(
-      hasMatchedEvent,
-      errorMessage,
-      `expected transaction to emit event ${eventName} but not with argument(s) matching assert function, but argument(s) match`,
-      assertionValue.expected,
-      assertionValue.actual,
+    const errorMessagePrefix = `expected transaction to emit event ${eventName} with matching argument(s)`;
+    const negatedErrorMessage = `expected transaction to emit event ${eventName} but not with matching argument(s), but argument(s) match`;
+    assertEmitEventWithArgsFromMatchedEventLogs(
+      this,
+      matchedEventLogs,
+      assertArgsFn,
+      errorMessagePrefix,
+      negatedErrorMessage,
     );
 
     return this;
@@ -253,18 +232,28 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
 
     const obj: Truffle.TransactionResponse = this._obj;
 
-    const matchedEventLog = obj.logs.find(
-      (log) =>
-        !isNil(log) &&
-        log.event === expectedEventName &&
-        assertArgsFn(log.args),
+    const matchedEventLogs = obj.logs.filter(
+      (log) => !isNil(log) && log.event === expectedEventName,
     );
-    const hasMatchedEvent = !!matchedEventLog;
 
-    this.assert(
-      hasMatchedEvent,
-      `expected transaction to emit event ${expectedEventName} with argument(s) matching assert function, but was not emitted`,
-      `expected transaction not to emit event ${expectedEventName} with argument(s) matching assert function, but was emitted`,
+    const hasMatchedEventLogs = matchedEventLogs.length !== 0;
+    if (!hasMatchedEventLogs) {
+      this.assert(
+        false,
+        `expected transaction to emit event ${expectedEventName} with matching argument(s), but was not emitted`,
+        "",
+      );
+      return this;
+    }
+
+    const errorMessagePrefix = `expected transaction to emit event ${expectedEventName} with matching argument(s)`;
+    const negatedErrorMessage = `expected transaction not to emit event ${expectedEventName} with matching argument(s), but was emitted`;
+    assertEmitEventWithArgsFromMatchedEventLogs(
+      this,
+      matchedEventLogs,
+      assertArgsFn,
+      errorMessagePrefix,
+      negatedErrorMessage,
     );
 
     return this;
@@ -273,7 +262,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
   method("emitEventWithArgsAt", function(
     this: ChaiUse.Assertion,
     expectedEventName: string,
-    assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+    assertArgsFn: AssertArgsFn,
     position: number,
   ) {
     new Assertion(this._obj).to.be.transactionResponse;
@@ -345,6 +334,48 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     );
 
     return assertion;
+  };
+
+  const assertEmitEventWithArgsFromMatchedEventLogs = (
+    assertion: ChaiUse.Assertion,
+    matchedEventLogs: Truffle.TransactionLog[],
+    assertArgsFn: AssertArgsFn,
+    errorMessagePrefix: string,
+    negatedErrorMessage: string,
+  ) => {
+    let hasMatchedEvent = false;
+    let lastError: Error | undefined;
+    for (const eventLog of matchedEventLogs) {
+      try {
+        if (assertArgsFn(eventLog.args)) {
+          hasMatchedEvent = true;
+          break;
+        }
+      } catch (err) {
+        lastError = err;
+      }
+    }
+
+    let errorMessage = errorMessagePrefix;
+    const assertionValue: FailAssertionValue = {};
+    if (typeof lastError === "undefined") {
+      errorMessage = `${errorMessage}, but argument(s) do not match`;
+    } else {
+      errorMessage = `${errorMessage}, but argument(s) assert function got: ${lastError.message}`;
+      if (lastError instanceof chai.AssertionError) {
+        const assertionError = (lastError as unknown) as ChaiAssertionError;
+        assertionValue.expected = assertionError.expected;
+        assertionValue.actual = assertionError.actual;
+      }
+    }
+
+    assertion.assert(
+      hasMatchedEvent,
+      errorMessage,
+      negatedErrorMessage,
+      assertionValue.expected,
+      assertionValue.actual,
+    );
   };
 
   const isNegated = (assertion: ChaiUse.Assertion): boolean => {
@@ -423,6 +454,9 @@ const failAssertion = (
 ) => {
   assertion.assert(false, message, "", value.expected, value.actual);
 };
+
+type AssertArgsFn = (args: Truffle.TransactionLogArgs) => boolean;
+
 interface FailAssertionValue {
   expected?: any;
   actual?: any;
@@ -431,4 +465,4 @@ interface FailAssertionValue {
 type ChaiAssertionError = typeof Chai.AssertionError & {
   expected?: any;
   actual?: any;
-}
+};
