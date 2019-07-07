@@ -128,7 +128,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
 
     const errorMessagePrefix = `expected transaction to emit event ${expectedEventName} with matching argument(s)`;
     const negatedErrorMessage = `expected transaction not to emit event ${expectedEventName} with matching argument(s), but was emitted`;
-    assertEmitEventWithArgsFromMatchedEventLogs(
+    assertEventArgsFromMatchedEventLogsWithAssertion(
       this,
       matchedEventLogs,
       assertArgsFn,
@@ -171,7 +171,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
 
     const errorMessagePrefix = `expected transaction to emit event ${expectedEventName} at position ${position} with matching argument(s)`;
     const negatedErrorMessage = `expected transaction not to emit event ${expectedEventName} at position ${position} with matching argument(s), but was emitted`;
-    assertEmitEventWithArgsFromMatchedEventLogs(
+    assertEventArgsFromMatchedEventLogsWithAssertion(
       this,
       [targetEventLog],
       assertArgsFn,
@@ -350,7 +350,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
 
     const errorMessagePrefix = `expected transaction to emit event ${eventName} with matching argument(s)`;
     const negatedErrorMessage = `expected transaction to emit event ${eventName} but not with matching argument(s), but argument(s) match`;
-    assertEmitEventWithArgsFromMatchedEventLogs(
+    assertEventArgsFromMatchedEventLogsWithAssertion(
       this,
       matchedEventLogs,
       assertArgsFn,
@@ -361,7 +361,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     return this;
   });
 
-  const assertEmitEventWithArgsFromMatchedEventLogs = (
+  const assertEventArgsFromMatchedEventLogsWithAssertion = (
     assertion: ChaiUse.Assertion,
     matchedEventLogs: Truffle.TransactionLog[],
     assertArgsFn: AssertArgsFn,
