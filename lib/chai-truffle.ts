@@ -123,6 +123,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
         this,
         `expected transaction to emit event ${expectedEventName} with matching argument(s), but was not emitted`,
       );
+
       return this;
     }
 

@@ -46,6 +46,13 @@ describe(".not.emitEventWithArgs", () => {
     );
   });
 
+  it("should pass when the call has not emitted the name-matched event", async () => {
+    const contractInstance = await TestContract.new();
+    const response = await contractInstance.emitMessageEvent("Hello World");
+
+    expect(response).not.to.emitEventWithArgs("TestEvent", () => true);
+  });
+
   context("Given multiple MessageEvents are emitted from transaction", () => {
     let response: Truffle.TransactionResponse;
     beforeEach(async () => {
