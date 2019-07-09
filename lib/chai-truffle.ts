@@ -6,6 +6,7 @@ import { isNil } from "./utils";
 
 export = (chai: any, utils: ChaiUse.Utils): void => {
   const Assertion: any = chai.Assertion;
+  const flag = utils.flag;
 
   const property = (
     name: string,
@@ -24,11 +25,14 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
   method("emitEvent", function(
     this: ChaiUse.Assertion,
     expectedEventName?: string,
+    message?: string,
   ) {
+    setMessageIfProvided(this, message);
+
     if (isNil(expectedEventName)) {
-      return assertHasEventEmittedWithAssertion(this);
+      return assertHasEventEmittedWithAssertion(this, message);
     }
-    new Assertion(this._obj).to.be.transactionResponse;
+    assertIsTransactionResponse(this._obj, message);
 
     const obj: Truffle.TransactionResponse = this._obj;
     const matchedEventLogIndexList = obj.logs
@@ -50,8 +54,9 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
 
   const assertHasEventEmittedWithAssertion = (
     assertion: ChaiUse.Assertion,
+    message: string | undefined,
   ): ChaiUse.Assertion => {
-    new Assertion(assertion._obj).to.be.transactionResponse;
+    assertIsTransactionResponse(assertion._obj, message);
 
     const obj: Truffle.TransactionResponse = assertion._obj;
     const logWithEventFound = obj.logs.find((log) => !isNil(log.event));
@@ -72,21 +77,23 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     this: ChaiUse.Assertion,
     expectedEventName: string,
     position: number,
+    message?: string,
   ) {
-    const objAssertion = new Assertion(this._obj);
-    objAssertion.to.be.transactionResponse;
+    setMessageIfProvided(this, message);
+
+    assertIsTransactionResponse(this._obj, message);
 
     const obj: Truffle.TransactionResponse = this._obj;
 
     const objLogSize = obj.logs.length;
     const positionOutOfLogsSize = position > objLogSize - 1;
     if (positionOutOfLogsSize) {
-      if (isNegated(this)) {
-        return this;
-      }
-      throw new Error(
+      failAssertion(
+        this,
         `expected transaction to emit event ${expectedEventName} at position ${position}, but only ${objLogSize} event(s) was emitted`,
       );
+
+      return this;
     }
     const eventAtTargetPosition = obj.logs[position].event;
     const hasTargetEventEmittedAtPosition =
@@ -108,8 +115,11 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     this: ChaiUse.Assertion,
     expectedEventName: string,
     assertArgsFn: AssertArgsFn,
+    message?: string,
   ) {
-    new Assertion(this._obj).to.be.transactionResponse;
+    setMessageIfProvided(this, message);
+
+    assertIsTransactionResponse(this._obj, message);
 
     const obj: Truffle.TransactionResponse = this._obj;
 
@@ -145,8 +155,12 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     expectedEventName: string,
     assertArgsFn: AssertArgsFn,
     position: number,
+    message?: string,
   ) {
-    new Assertion(this._obj).to.be.transactionResponse;
+    setMessageIfProvided(this, message);
+
+    assertIsTransactionResponse(this._obj, message);
+
     const obj: Truffle.TransactionResponse = this._obj;
 
     const objLogSize = obj.logs.length;
@@ -189,8 +203,11 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
   function eventLengthAssertFn(
     this: ChaiUse.Assertion,
     expectedLength: number,
+    message?: string,
   ): ChaiUse.Assertion {
-    assertIsTransactionResponse(this._obj);
+    setMessageIfProvided(this, message);
+
+    assertIsTransactionResponse(this._obj, message);
 
     const actualEventLogLength = (this._obj as Truffle.TransactionResponse).logs
       .length;
@@ -205,14 +222,23 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     return this;
   }
 
-  const assertIsTransactionResponse = (value: any) => {
-    new Assertion(value).is.transactionResponse;
+  const assertIsTransactionResponse = (
+    value: any,
+    message: string | undefined,
+  ) => {
+    const assertion = new Assertion(value);
+    setMessageIfProvided(assertion, message);
+
+    assertion.is.transactionResponse;
   };
 
   method("evmFail", function(
     this: ChaiUse.Assertion,
     expectedErrorMessage?: string,
+    message?: string,
   ) {
+    setMessageIfProvided(this, message);
+
     assertIsPromiseLike(this._obj);
 
     const obj: Promise<any> = this._obj;
@@ -227,7 +253,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
           actual: result,
         });
 
-        new Assertion(result).to.be.transactionResponse;
+        assertIsTransactionResponse(result, message);
       },
       (err: Error) => {
         if (isNil(expectedErrorMessage)) {
@@ -241,7 +267,8 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
             },
           );
         } else {
-          const isErrorMessageMatch = err.message.indexOf(expectedErrorMessage as string) !== -1;
+          const isErrorMessageMatch =
+            err.message.indexOf(expectedErrorMessage as string) !== -1;
           this.assert(
             isErrorMessageMatch,
             `expected transaction to fail in EVM because of '${expectedErrorMessage}', but it failed of another reason`,
@@ -257,16 +284,18 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     return this;
   });
 
-  method("evmOutOfGas", function(this: ChaiUse.Assertion) {
-    return this.to.evmFail("out of gas");
+  method("evmOutOfGas", function(this: ChaiUse.Assertion, message?: string) {
+    return this.to.evmFail("out of gas", message);
   });
 
-  method("evmRevert", function(this: ChaiUse.Assertion) {
-    return this.to.evmFail("revert");
+  method("evmRevert", function(this: ChaiUse.Assertion, message?: string) {
+    return this.to.evmFail("revert", message);
   });
 
-  method("evmSuccess", function(this: ChaiUse.Assertion) {
-    assertIsPromiseLike(this._obj);
+  method("evmSuccess", function(this: ChaiUse.Assertion, message?: string) {
+    setMessageIfProvided(this, message);
+
+    assertIsPromiseLike(this._obj, message);
 
     const obj: Promise<any> = this._obj;
     const derivedPromise = obj.then(
@@ -277,7 +306,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
           this,
           "expected transaction to fail in EVM, but it succeeded",
         );
-        new Assertion(result).to.be.transactionResponse;
+        assertIsTransactionResponse(result, message);
       },
       (err: Error) => {
         // Promise rejects to error, if the assertion expect to broadcast,
@@ -405,8 +434,11 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     );
   };
 
-  const assertIsPromiseLike = (value: any) => {
-    new Assertion(value).assert(
+  const assertIsPromiseLike = (value: any, message?: string) => {
+    const assertion = new Assertion(value);
+    setMessageIfProvided(assertion, message);
+
+    assertion.assert(
       typeof value.then !== "undefined",
       "expected #{this} to be a Promise",
       "expected #{this} not to be a Promise",
@@ -430,36 +462,45 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
   };
 
   const isNegated = (assertion: ChaiUse.Assertion): boolean => {
-    return !isNil(utils.flag(assertion, "negate"));
+    return !isNil(flag(assertion, "negate"));
   };
 
   const isNegatedBeforeAssertEmitEvent = (
     assertion: ChaiUse.Assertion,
   ): boolean => {
-    return !isNil(utils.flag(assertion, "truffleNegatedBeforeAssertEmitEvent"));
+    return !isNil(flag(assertion, "truffleNegatedBeforeAssertEmitEvent"));
   };
 
   const isEmitEventAsserted = (assertion: ChaiUse.Assertion): boolean => {
-    return !isNil(utils.flag(assertion, "truffleEmitEventLogPositionList"));
+    return !isNil(flag(assertion, "truffleEmitEventLogPositionList"));
   };
 
   const setEmitEventLogPositionList = (
     assertion: ChaiUse.Assertion,
     positionList: number[],
   ) => {
-    utils.flag(assertion, "truffleEmitEventLogPositionList", positionList);
+    flag(assertion, "truffleEmitEventLogPositionList", positionList);
+  };
+
+  const setMessageIfProvided = (
+    assertion: ChaiUse.Assertion,
+    message: string | undefined,
+  ) => {
+    if (!isNil(message)) {
+      flag(assertion, "message", message);
+    }
   };
 
   const updateNegatedBeforeAssertEmitEvent = (assertion: ChaiUse.Assertion) => {
     if (isNegated(assertion)) {
-      return utils.flag(assertion, "truffleNegatedBeforeAssertEmitEvent", true);
+      return flag(assertion, "truffleNegatedBeforeAssertEmitEvent", true);
     }
   };
 
   const getEmitEventLogPositionList = (
     assertion: ChaiUse.Assertion,
   ): number[] => {
-    return utils.flag(assertion, "truffleEmitEventLogPositionList");
+    return flag(assertion, "truffleEmitEventLogPositionList");
   };
 };
 

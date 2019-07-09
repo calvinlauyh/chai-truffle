@@ -21,6 +21,14 @@ describe(".not.evmSuccess()", () => {
     );
   });
 
+  it("should support custom error message", async () => {
+    const contractInstance = await TestContract.new();
+    return assertPromiseShouldReject(
+      expect(contractInstance.doNothing()).not.to.evmSuccess("Custom error message"),
+      "Custom error message: expected transaction to fail in EVM, but it succeeded",
+    );
+  });
+
   it("should pass when the call has missing argument", async () => {
     const contractInstance = await TestContract.new();
     return expect(contractInstance.emitMessageEvent()).not.to.evmSuccess();
@@ -75,6 +83,13 @@ describe(".evmSuccess()", () => {
     return assertPromiseShouldReject(
       expect(Promise.resolve("Hello world")).to.evmSuccess(),
       "expected 'Hello world' to be a Truffle TransactionResponse",
+    );
+  });
+
+  it("should support custom error message", async () => {
+    return assertPromiseShouldReject(
+      expect(Promise.resolve("Hello world")).to.evmSuccess("Custom error message"),
+      "Custom error message: expected 'Hello world' to be a Truffle TransactionResponse",
     );
   });
 

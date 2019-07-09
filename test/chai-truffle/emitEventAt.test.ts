@@ -41,6 +41,21 @@ describe(".not.emitEventAt()", () => {
     );
   });
 
+  it("should support custom error message", async () => {
+    const contractInstance = await TestContract.new();
+    const response = await contractInstance.emitTestEvent();
+
+    expect(() => {
+      expect(response).not.to.emitEventAt(
+        "TestEvent",
+        0,
+        "Custom error message",
+      );
+    }).to.throw(
+      "Custom error message: expected transaction not to emit event TestEvent at position 0, but was emitted",
+    );
+  });
+
   it("should pass when the call has emitted the name-matched event but not at the position", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.emitDefaultMessageAndTestEvents();
@@ -118,6 +133,17 @@ describe(".emitEventAt()", () => {
       expect(response).to.emitEventAt("TestEvent", 0);
     }).to.throw(
       "expected transaction to emit event TestEvent at position 0, but only 0 event(s) was emitted",
+    );
+  });
+
+  it("should support custom error message", async () => {
+    const contractInstance = await TestContract.new();
+    const response = await contractInstance.doNothing();
+
+    expect(() => {
+      expect(response).to.emitEventAt("TestEvent", 0, "Custom error message");
+    }).to.throw(
+      "Custom error message: expected transaction to emit event TestEvent at position 0, but only 0 event(s) was emitted",
     );
   });
 

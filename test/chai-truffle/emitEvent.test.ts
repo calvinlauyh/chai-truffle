@@ -6,12 +6,6 @@ const TestContract: TestContract = artifacts.require("Test");
 chai.use(chaiTruffle);
 
 describe(".not.emitEvent()", () => {
-  it("should fail when provided value is not TransactionResponse", async () => {
-    expect(() => {
-      expect("Hello World").not.to.emitEvent();
-    }).to.throw("to be a Truffle TransactionResponse");
-  });
-
   it("should fail when the call is reading a state", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.eventId();
@@ -28,6 +22,15 @@ describe(".not.emitEvent()", () => {
     expect(() => {
       expect(response).not.to.emitEvent();
     }).to.throw("to be a Truffle TransactionResponse");
+  });
+
+  it("should support custom error message", async () => {
+    const contractInstance = await TestContract.new();
+    const response = await contractInstance.emitTestEvent();
+
+    expect(() => {
+      expect(response).not.to.emitEvent(undefined, "Custom error message");
+    }).to.throw("Custom error message");
   });
 
   it("should pass when the call has not emitted any event", async () => {
@@ -52,6 +55,17 @@ describe(".not.emitEvent()", () => {
         expect(response).not.to.emitEvent("TestEvent");
       }).to.throw(
         "expected transaction not to emit event TestEvent, but was emitted",
+      );
+    });
+
+    it("should support error message", async () => {
+      const contractInstance = await TestContract.new();
+      const response = await contractInstance.emitTestEvent();
+
+      expect(() => {
+        expect(response).not.to.emitEvent("TestEvent", "Custom error message");
+      }).to.throw(
+        "Custom error message: expected transaction not to emit event TestEvent, but was emitted",
       );
     });
 
@@ -89,6 +103,15 @@ describe(".emitEvent()", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
+  it("should support custom error message", async () => {
+    const contractInstance = await TestContract.new();
+    const response = await contractInstance.doNothing();
+
+    expect(() => {
+      expect(response).to.emitEvent(undefined, "Custom error message");
+    }).to.throw("Custom error message: expected transaction to emit event, but none was emitted");
+  });
+
   it("should pass when the call has emitted an event", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.emitTestEvent();
@@ -105,6 +128,17 @@ describe(".emitEvent()", () => {
         expect(response).to.emitEvent("TestEvent");
       }).to.throw(
         "expected transaction to emit event TestEvent, but was not emitted",
+      );
+    });
+
+    it("should support custom error message", async () => {
+      const contractInstance = await TestContract.new();
+      const response = await contractInstance.emitMessageEvent("Hello World");
+
+      expect(() => {
+        expect(response).to.emitEvent("TestEvent", "Custom error message");
+      }).to.throw(
+        "Custom error message: expected transaction to emit event TestEvent, but was not emitted",
       );
     });
 

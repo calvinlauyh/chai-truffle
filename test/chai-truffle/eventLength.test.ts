@@ -21,6 +21,15 @@ describe("not.eventLength", () => {
     }).to.throw("expected transaction not to emit 2 event log(s)");
   });
 
+  it("should support custom error message", async () => {
+    const contractInstance = await TestContract.new();
+
+    const response = await contractInstance.emitDefaultMessageAndTestEvents();
+    expect(() => {
+      expect(response).not.to.have.eventLength(2, "Custom error message");
+    }).to.throw("Custom error message: expected transaction not to emit 2 event log(s)");
+  });
+
   it("should pass when the length of event log is different from the provided length", async () => {
     const contractInstance = await TestContract.new();
 
@@ -44,6 +53,17 @@ describe("eventLength", () => {
       expect(response).to.have.eventLength(1);
     }).to.throw(
       "expected transaction to emit 1 event log(s), but 2 was emitted",
+    );
+  });
+
+  it("should support custom error message", async () => {
+    const contractInstance = await TestContract.new();
+
+    const response = await contractInstance.emitDefaultMessageAndTestEvents();
+    expect(() => {
+      expect(response).to.have.eventLength(1, "Custom error message");
+    }).to.throw(
+      "Custom error message: expected transaction to emit 1 event log(s), but 2 was emitted",
     );
   });
 
