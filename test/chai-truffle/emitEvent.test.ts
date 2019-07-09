@@ -6,13 +6,13 @@ const TestContract: TestContract = artifacts.require("Test");
 chai.use(chaiTruffle);
 
 describe(".not.emitEvent()", () => {
-  it("should not pass when provided value is not TransactionResponse", async () => {
+  it("should fail when provided value is not TransactionResponse", async () => {
     expect(() => {
       expect("Hello World").not.to.emitEvent();
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the call is reading a state", async () => {
+  it("should fail when the call is reading a state", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.eventId();
 
@@ -21,7 +21,7 @@ describe(".not.emitEvent()", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the call is calling a view function", async () => {
+  it("should fail when the call is calling a view function", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.nextEventId();
 
@@ -38,13 +38,13 @@ describe(".not.emitEvent()", () => {
   });
 
   context("Given event name", () => {
-    it("should not pass when provided value is not TransactionResponse", async () => {
+    it("should fail when provided value is not TransactionResponse", async () => {
       expect(() => {
         expect("Hello World").not.to.emitEvent("TestEvent");
       }).to.throw("to be a Truffle TransactionResponse");
     });
 
-    it("should not pass when the call has emitted the specified event", async () => {
+    it("should fail when the call has emitted the specified event", async () => {
       const contractInstance = await TestContract.new();
       const response = await contractInstance.emitTestEvent();
 
@@ -65,13 +65,13 @@ describe(".not.emitEvent()", () => {
 });
 
 describe(".emitEvent()", () => {
-  it("should not pass when provided value is not TransactionResponse", async () => {
+  it("should fail when provided value is not TransactionResponse", async () => {
     expect(() => {
       expect("Hello World").to.emitEvent();
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the call is reading a state", async () => {
+  it("should fail when the call is reading a state", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.eventId();
 
@@ -80,7 +80,7 @@ describe(".emitEvent()", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
-  it("should not pass when the call is calling a view function", async () => {
+  it("should fail when the call is calling a view function", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.nextEventId();
 
@@ -97,7 +97,7 @@ describe(".emitEvent()", () => {
   });
 
   context("Given event name", () => {
-    it("should not pass when the call has not emitted the specified event", async () => {
+    it("should fail when the call has not emitted the specified event", async () => {
       const contractInstance = await TestContract.new();
       const response = await contractInstance.emitMessageEvent("Hello World");
 

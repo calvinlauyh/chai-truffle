@@ -7,13 +7,13 @@ const TestContract: TestContract = artifacts.require("Test");
 chai.use(chaiTruffle);
 
 describe(".not.evmFail()", () => {
-  it("should not pass when the object is not a promise", () => {
+  it("should fail when the object is not a promise", () => {
     expect(() => {
       expect("Hello world").not.to.evmFail();
     }).to.throw("expected 'Hello world' to be a Promise");
   });
 
-  it("should not pass when the call runs out of gas in EVM", async () => {
+  it("should fail when the call runs out of gas in EVM", async () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(
@@ -25,7 +25,7 @@ describe(".not.evmFail()", () => {
     );
   });
 
-  it("should not pass when the call get reverted in EVM", async () => {
+  it("should fail when the call get reverted in EVM", async () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.revertImmediately()).not.to.evmFail(),
@@ -33,10 +33,19 @@ describe(".not.evmFail()", () => {
     );
   });
 
-  it("should not pass when the promise resolve to non-transaction response", () => {
+  it("should fail when the promise resolve to non-transaction response", () => {
     return assertPromiseShouldReject(
       expect(Promise.resolve("Hello world")).not.to.evmFail(),
       "expected 'Hello world' to be a Truffle TransactionResponse",
+    );
+  });
+
+  it("should fail when the call fails in EVM with provided reason", async () => {
+    const contractInstance = await TestContract.new();
+
+    return assertPromiseShouldReject(
+      expect(contractInstance.revertImmediately()).not.to.evmFail("revert"),
+      "expected transaction not to fail in EVM because of 'revert', but it was",
     );
   });
 
@@ -47,17 +56,26 @@ describe(".not.evmFail()", () => {
 });
 
 describe(".evmFail()", () => {
-  it("should not pass when the object is not a promise", () => {
+  it("should fail when the object is not a promise", () => {
     expect(() => {
       expect("Hello world").to.evmFail();
     }).to.throw("expected 'Hello world' to be a Promise");
   });
 
-  it("should not pass when the call succeeds in EVM", async () => {
+  it("should fail when the call succeeds in EVM", async () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.doNothing()).to.evmFail(),
       "expected transaction to fail in EVM, but it succeeded",
+    );
+  });
+
+  it("should fail when the call fails in EVM but of another reason", async () => {
+    const contractInstance = await TestContract.new();
+
+    return assertPromiseShouldReject(
+      expect(contractInstance.revertImmediately()).to.evmFail("It fails, I don't know why"),
+      "expected transaction to fail in EVM because of 'It fails, I don't know why', but it failed of another reason",
     );
   });
 
@@ -69,7 +87,7 @@ describe(".evmFail()", () => {
   it("should pass when the call runs out of gas in EVM", async () => {
     const contractInstance = await TestContract.new();
 
-    expect(
+    return expect(
       contractInstance.drainGas({
         gas: 30000,
       }),
@@ -79,6 +97,6 @@ describe(".evmFail()", () => {
   it("should pass when the call gets reverted in EVM", async () => {
     const contractInstance = await TestContract.new();
 
-    expect(contractInstance.revertImmediately()).to.evmFail();
+    return expect(contractInstance.revertImmediately()).to.evmFail();
   });
 });
