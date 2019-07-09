@@ -11,52 +11,57 @@ declare global {
       extends LanguageChains,
         NumericComparison,
         TypeComparison {
-      emitEvent(eventName?: string): Assertion;
-      emitEventAt(eventName: string, position: number): Assertion;
+      emitEvent(eventName?: string, message?: string): Assertion;
+      emitEventAt(eventName: string, position: number, message?: string): Assertion;
       emitEventWithArgs(
         eventName: string,
         assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+        message?: string,
       ): Assertion;
       emitEventWithArgsAt(
         eventName: string,
         assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
         position: number,
+        message?: string,
       ): Assertion;
-      eventLength(expectedLength: number): Assertion;
-      eventLengthOf(expectedLength: number): Assertion;
-      evmFail(errorMessage?: string): Assertion;
-      evmOutOfGas(): Assertion;
-      evmRevert(): Assertion;
-      evmSuccess(): Assertion;
+      eventLength(expectedLength: number, message?: string): Assertion;
+      eventLengthOf(expectedLength: number, message?: string): Assertion;
+      evmFail(errorMessage?: string, message?: string): Assertion;
+      evmOutOfGas(message?: string): Assertion;
+      evmRevert(message?: string): Assertion;
+      evmSuccess(message?: string): Assertion;
       transactionResponse: Assertion;
       withEventArgs(
-        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+        assertArgsFn: (args: Truffle.TransactionLogArgs, message?: string) => boolean,
       ): Assertion;
     }
 
     interface Assert {
-      emitEvent<T>(val: T, eventName?: string): void;
-      emitEventAt<T>(val: T, eventName: string, position: number): void;
+      emitEvent<T>(val: T, eventName?: string, message?: string): void;
+      emitEventAt<T>(val: T, eventName: string, position: number, message?: string): void;
       emitEventWithArgs<T>(
         val: T,
         eventName: string,
         assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+        message?: string,
       ): void;
       emitEventWithArgsAt<T>(
         val: T,
         eventName: string,
         assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
         position: number,
+        message?: string,
       ): void;
-      eventLength<T>(val: T, expectedLength: number): void;
-      eventLengthOf<T>(val: T, expectedLength: number): void;
-      evmFail<T>(val: T, errorMessage?: string): void;
-      evmOutOfGas<T>(val: T): void;
-      evmRevert<T>(val: T): void;
-      evmSuccess<T>(val: T): void;
+      eventLength<T>(val: T, expectedLength: number, message?: string): void;
+      eventLengthOf<T>(val: T, expectedLength: number, message?: string): void;
+      evmFail<T>(val: T, errorMessage?: string, message?: string): void;
+      evmOutOfGas<T>(val: T, message?: string): void;
+      evmRevert<T>(val: T, message?: string): void;
+      evmSuccess<T>(val: T, message?: string): void;
       withEventArgs<T>(
         val: T,
         assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+        message?: string,
       ): void;
     }
   }

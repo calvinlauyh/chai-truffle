@@ -49,6 +49,18 @@ describe(".not.evmFail()", () => {
     );
   });
 
+  it("should support custom error message", async () => {
+    const contractInstance = await TestContract.new();
+
+    return assertPromiseShouldReject(
+      expect(contractInstance.revertImmediately()).not.to.evmFail(
+        "revert",
+        "Custom error message",
+      ),
+      "Custom error message: expected transaction not to fail in EVM because of 'revert', but it was",
+    );
+  });
+
   it("should pass when the call succeeds in EVM", async () => {
     const contractInstance = await TestContract.new();
     return expect(contractInstance.doNothing()).not.to.evmFail();
@@ -74,8 +86,22 @@ describe(".evmFail()", () => {
     const contractInstance = await TestContract.new();
 
     return assertPromiseShouldReject(
-      expect(contractInstance.revertImmediately()).to.evmFail("It fails, I don't know why"),
+      expect(contractInstance.revertImmediately()).to.evmFail(
+        "It fails, I don't know why",
+      ),
       "expected transaction to fail in EVM because of 'It fails, I don't know why', but it failed of another reason",
+    );
+  });
+
+  it("should support custom error message", async () => {
+    const contractInstance = await TestContract.new();
+
+    return assertPromiseShouldReject(
+      expect(contractInstance.revertImmediately()).to.evmFail(
+        "It fails, I don't know why",
+        "Custom error message",
+      ),
+      "Custom error message: expected transaction to fail in EVM because of 'It fails, I don't know why', but it failed of another reason",
     );
   });
 

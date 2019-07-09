@@ -41,7 +41,6 @@ describe(".not.emitEventWithArgsAt", () => {
       response = await contractInstance.emitTwoMessageEvents("Hello", "World");
     });
 
-    // tslint:disable-next-line:max-line-length
     it("should fail when the call has emitted the exact matching event at target position", async () => {
       expect(() => {
         expect(response).not.to.emitEventWithArgsAt(
@@ -53,6 +52,21 @@ describe(".not.emitEventWithArgsAt", () => {
         );
       }).to.throw(
         "expected transaction not to emit event MessageEvent at position 1 with matching argument(s), but was emitted",
+      );
+    });
+
+    it("should support custom error message", async () => {
+      expect(() => {
+        expect(response).not.to.emitEventWithArgsAt(
+          "MessageEvent",
+          (args: Truffle.TransactionLogArgs): boolean => {
+            return args.message === "World";
+          },
+          1,
+          "Custom error message",
+        );
+      }).to.throw(
+        "Custom error message: expected transaction not to emit event MessageEvent at position 1 with matching argument(s), but was emitted",
       );
     });
 
@@ -181,6 +195,21 @@ describe(".emitEventWithArgsAt", () => {
         );
       }).to.throw(
         "expected transaction to emit event TestEvent at position 1 with matching argument(s), but was not emitted",
+      );
+    });
+
+    it("should support custom error message", () => {
+      expect(() => {
+        expect(response).to.emitEventWithArgsAt(
+          "TestEvent",
+          (args: Truffle.TransactionLogArgs): boolean => {
+            return args.purpose === "Testing";
+          },
+          1,
+          "Custom error message",
+        );
+      }).to.throw(
+        "Custom error message: expected transaction to emit event TestEvent at position 1 with matching argument(s), but was not emitted",
       );
     });
 

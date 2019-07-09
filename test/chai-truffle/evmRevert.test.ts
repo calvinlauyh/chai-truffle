@@ -7,6 +7,24 @@ const TestContract: TestContract = artifacts.require("Test");
 chai.use(chaiTruffle);
 
 describe(".not.evmRevert()", () => {
+  it("should fail when the call gets reverted in EVM", async () => {
+    const contractInstance = await TestContract.new();
+    return assertPromiseShouldReject(
+      expect(contractInstance.revertImmediately()).not.to.evmRevert(),
+      "expected transaction not to fail in EVM because of 'revert', but it was",
+    );
+  });
+
+  it("should support custom error message", async () => {
+    const contractInstance = await TestContract.new();
+    return assertPromiseShouldReject(
+      expect(contractInstance.revertImmediately()).not.to.evmRevert(
+        "Custom error message",
+      ),
+      "Custom error message: expected transaction not to fail in EVM because of 'revert', but it was",
+    );
+  });
+
   it("should pass when the call succeeds in EVM", async () => {
     const contractInstance = await TestContract.new();
     return expect(contractInstance.doNothing()).not.to.evmRevert();
@@ -19,14 +37,6 @@ describe(".not.evmRevert()", () => {
         gas: 30000,
       }),
     ).not.to.evmRevert();
-  });
-
-  it("should fail when the call gets reverted in EVM", async () => {
-    const contractInstance = await TestContract.new();
-    return assertPromiseShouldReject(
-      expect(contractInstance.revertImmediately()).not.to.evmRevert(),
-      "expected transaction not to fail in EVM because of 'revert', but it was",
-    );
   });
 });
 
@@ -48,6 +58,16 @@ describe(".evmRevert()", () => {
         }),
       ).to.evmRevert(),
       "expected transaction to fail in EVM because of 'revert', but it failed of another reason",
+    );
+  });
+
+  it("should support custom error message", async () => {
+    const contractInstance = await TestContract.new();
+    return assertPromiseShouldReject(
+      expect(contractInstance.doNothing()).to.evmRevert(
+        "Custom error message",
+      ),
+      "Custom error message: expected transaction to fail in EVM because of 'revert', but it succeeded",
     );
   });
 

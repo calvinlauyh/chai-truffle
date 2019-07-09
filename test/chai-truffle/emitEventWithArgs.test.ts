@@ -46,6 +46,23 @@ describe(".not.emitEventWithArgs", () => {
     );
   });
 
+  it("should support customer error message", async () => {
+    const contractInstance = await TestContract.new();
+    const response = await contractInstance.emitMessageEvent("Hello World");
+
+    expect(() => {
+      expect(response).not.to.emitEventWithArgs(
+        "MessageEvent",
+        (args: Truffle.TransactionLogArgs): boolean => {
+          return args.message === "Hello World";
+        },
+        "Custom error message",
+      );
+    }).to.throw(
+      "Custom error message: expected transaction not to emit event MessageEvent with matching argument(s), but was emitted",
+    );
+  });
+
   it("should pass when the call has not emitted the name-matched event", async () => {
     const contractInstance = await TestContract.new();
     const response = await contractInstance.emitMessageEvent("Hello World");
@@ -113,6 +130,40 @@ describe(".emitEventWithArgs", () => {
     }).to.throw("to be a Truffle TransactionResponse");
   });
 
+  it("should fail when the call does not emit the name-matched event", async () => {
+    const contractInstance = await TestContract.new();
+    const response = await contractInstance.emitMessageEvent("Hello World");
+
+    expect(() => {
+      expect(response).to.emitEventWithArgs("TestEvent", () => true);
+    }).to.throw(
+      "expected transaction to emit event TestEvent with matching argument(s), but was not emitted",
+    );
+  });
+
+  it("should support custom error message", async () => {
+    const contractInstance = await TestContract.new();
+    const response = await contractInstance.emitMessageEvent("Hello World");
+
+    expect(() => {
+      expect(response).to.emitEventWithArgs("TestEvent", () => true, "Custom error message");
+    }).to.throw(
+      "Custom error message: expected transaction to emit event TestEvent with matching argument(s), but was not emitted",
+    );
+  });
+
+  it("should pass when the call emits the exact matching event", async () => {
+    const contractInstance = await TestContract.new();
+    const response = await contractInstance.emitMessageEvent("Hello World");
+
+    expect(response).to.emitEventWithArgs(
+      "MessageEvent",
+      (args: Truffle.TransactionLogArgs): boolean => {
+        return args.message === "Hello World";
+      },
+    );
+  });
+
   context("Call emits name-matched event but with mismatched arguments", () => {
     it("should fail when arguments assert function return false", async () => {
       const contractInstance = await TestContract.new();
@@ -166,29 +217,6 @@ describe(".emitEventWithArgs", () => {
 
       throw new Error("Should thrown Error");
     });
-  });
-
-  it("should fail when the call does not emit the name-matched event", async () => {
-    const contractInstance = await TestContract.new();
-    const response = await contractInstance.emitMessageEvent("Hello World");
-
-    expect(() => {
-      expect(response).to.emitEventWithArgs("TestEvent", () => true);
-    }).to.throw(
-      "expected transaction to emit event TestEvent with matching argument(s), but was not emitted",
-    );
-  });
-
-  it("should pass when the call emits the exact matching event", async () => {
-    const contractInstance = await TestContract.new();
-    const response = await contractInstance.emitMessageEvent("Hello World");
-
-    expect(response).to.emitEventWithArgs(
-      "MessageEvent",
-      (args: Truffle.TransactionLogArgs): boolean => {
-        return args.message === "Hello World";
-      },
-    );
   });
 
   context("Given multiple MessageEvents are emitted from transaction", () => {
