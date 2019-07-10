@@ -1,6 +1,6 @@
 {
   "name": "chai-truffle",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "build/lib/chai-truffle.js",
   "author": "Calvin Lau <calvinlauco@gmail.com>",
   "repository": {
