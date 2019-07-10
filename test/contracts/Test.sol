@@ -48,6 +48,12 @@ contract Test {
         }
     }
 
+    function assertImmediately() public {
+        assert(1 == 2);
+
+        emitTestEvent();
+    }
+
     function revertImmediately() public {
         require(1 == 2, "Revert immediately");
 
