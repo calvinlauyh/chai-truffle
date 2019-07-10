@@ -55,7 +55,7 @@ describe(".evmOutOfGas()", () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.revertImmediately()).to.evmOutOfGas(),
-      "expected transaction to fail in EVM because of 'out of gas', but it failed of another reason",
+      "expected transaction to fail in EVM because of 'out of gas', but it failed of another reason:",
     );
   });
 
@@ -63,7 +63,7 @@ describe(".evmOutOfGas()", () => {
     const contractInstance = await TestContract.new();
     return assertPromiseShouldReject(
       expect(contractInstance.revertImmediately()).to.evmOutOfGas("Custom error message"),
-      "Custom error message: expected transaction to fail in EVM because of 'out of gas', but it failed of another reason",
+      "Custom error message: expected transaction to fail in EVM because of 'out of gas', but it failed of another reason:",
     );
   });
 

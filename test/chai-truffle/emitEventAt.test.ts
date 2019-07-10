@@ -37,7 +37,7 @@ describe(".not.emitEventAt()", () => {
     expect(() => {
       expect(response).not.to.emitEventAt("TestEvent", 0);
     }).to.throw(
-      "expected transaction not to emit event TestEvent at position 0, but was emitted",
+      "expected transaction not to emit event 'TestEvent' at position 0, but was emitted",
     );
   });
 
@@ -52,7 +52,7 @@ describe(".not.emitEventAt()", () => {
         "Custom error message",
       );
     }).to.throw(
-      "Custom error message: expected transaction not to emit event TestEvent at position 0, but was emitted",
+      "Custom error message: expected transaction not to emit event 'TestEvent' at position 0, but was emitted",
     );
   });
 
@@ -110,7 +110,7 @@ describe(".emitEventAt()", () => {
     expect(() => {
       expect(response).to.emitEventAt("TestEvent", 0);
     }).to.throw(
-      "expected transaction to emit event TestEvent at position 0, but MessageEvent was emitted",
+      "expected transaction to emit event 'TestEvent' at position 0, but 'MessageEvent' was emitted",
     );
   });
 
@@ -121,7 +121,7 @@ describe(".emitEventAt()", () => {
     expect(() => {
       expect(response).to.emitEventAt("TestEvent", 0);
     }).to.throw(
-      "expected transaction to emit event TestEvent at position 0, but MessageEvent was emitted",
+      "expected transaction to emit event 'TestEvent' at position 0, but 'MessageEvent' was emitted",
     );
   });
 
@@ -132,7 +132,7 @@ describe(".emitEventAt()", () => {
     expect(() => {
       expect(response).to.emitEventAt("TestEvent", 0);
     }).to.throw(
-      "expected transaction to emit event TestEvent at position 0, but only 0 event(s) was emitted",
+      "expected transaction to emit event 'TestEvent' at position 0, but only 0 event(s) was emitted",
     );
   });
 
@@ -143,7 +143,7 @@ describe(".emitEventAt()", () => {
     expect(() => {
       expect(response).to.emitEventAt("TestEvent", 0, "Custom error message");
     }).to.throw(
-      "Custom error message: expected transaction to emit event TestEvent at position 0, but only 0 event(s) was emitted",
+      "Custom error message: expected transaction to emit event 'TestEvent' at position 0, but only 0 event(s) was emitted",
     );
   });
 

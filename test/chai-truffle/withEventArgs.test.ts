@@ -26,7 +26,7 @@ describe("not.withEventArgs", () => {
         .to.emitEvent("TestEvent")
         .not.withEventArgs(() => true);
     }).to.throw(
-      "expected transaction to emit event TestEvent, but was not emitted",
+      "expected transaction to emit event 'TestEvent', but was not emitted",
     );
   });
 
@@ -55,7 +55,7 @@ describe("not.withEventArgs", () => {
           return args.message === "Hello World";
         });
     }).to.throw(
-      "expected transaction to emit event MessageEvent but not with matching argument(s), but argument(s) match",
+      "expected transaction to emit event 'MessageEvent' but not with matching argument(s), but argument(s) match",
     );
   });
 
@@ -86,7 +86,7 @@ describe("not.withEventArgs", () => {
             return args.message === "World";
           });
       }).to.throw(
-        "expected transaction to emit event MessageEvent but not with matching argument(s), but argument(s) match",
+        "expected transaction to emit event 'MessageEvent' but not with matching argument(s), but argument(s) match",
       );
     });
 
@@ -127,7 +127,7 @@ describe("withEventArgs", () => {
         .to.emitEvent("TestEvent")
         .withEventArgs(() => true);
     }).to.throw(
-      "expected transaction to emit event TestEvent, but was not emitted",
+      "expected transaction to emit event 'TestEvent', but was not emitted",
     );
   });
 
@@ -143,7 +143,7 @@ describe("withEventArgs", () => {
             return args.message === "Call me maybe?";
           });
       }).to.throw(
-        "expected transaction to emit event MessageEvent with matching argument(s), but argument(s) do not match",
+        "expected transaction to emit event 'MessageEvent' with matching argument(s), but argument(s) do not match",
       );
     });
 
@@ -158,7 +158,7 @@ describe("withEventArgs", () => {
             throw new Error("Arguments does not match");
           });
       }).to.throw(
-        "expected transaction to emit event MessageEvent with matching argument(s), but argument(s) assert function got: Arguments does not match",
+        "expected transaction to emit event 'MessageEvent' with matching argument(s), but argument(s) assert function got: 'Arguments does not match'",
       );
     });
 
@@ -177,7 +177,7 @@ describe("withEventArgs", () => {
       } catch (err) {
         expect(err).to.be.instanceOf(chai.AssertionError);
         expect(err.message).to.eq(
-          "expected transaction to emit event MessageEvent with matching argument(s), but argument(s) assert function got: expected 'Hello' to equal 'World'",
+          "expected transaction to emit event 'MessageEvent' with matching argument(s), but argument(s) assert function got: 'expected 'Hello' to equal 'World''",
         );
         expect(err.expected).to.eq("World");
         expect(err.actual).to.eq("Hello");
@@ -215,7 +215,7 @@ describe("withEventArgs", () => {
             return args.message === "Call me maybe?";
           });
       }).to.throw(
-        "expected transaction to emit event MessageEvent with matching argument(s), but argument(s) do not match",
+        "expected transaction to emit event 'MessageEvent' with matching argument(s), but argument(s) do not match",
       );
     });
 

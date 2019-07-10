@@ -54,7 +54,7 @@ describe(".not.emitEvent()", () => {
       expect(() => {
         expect(response).not.to.emitEvent("TestEvent");
       }).to.throw(
-        "expected transaction not to emit event TestEvent, but was emitted",
+        "expected transaction not to emit event 'TestEvent', but was emitted",
       );
     });
 
@@ -65,7 +65,7 @@ describe(".not.emitEvent()", () => {
       expect(() => {
         expect(response).not.to.emitEvent("TestEvent", "Custom error message");
       }).to.throw(
-        "Custom error message: expected transaction not to emit event TestEvent, but was emitted",
+        "Custom error message: expected transaction not to emit event 'TestEvent', but was emitted",
       );
     });
 
@@ -127,7 +127,7 @@ describe(".emitEvent()", () => {
       expect(() => {
         expect(response).to.emitEvent("TestEvent");
       }).to.throw(
-        "expected transaction to emit event TestEvent, but was not emitted",
+        "expected transaction to emit event 'TestEvent', but was not emitted",
       );
     });
 
@@ -138,7 +138,7 @@ describe(".emitEvent()", () => {
       expect(() => {
         expect(response).to.emitEvent("TestEvent", "Custom error message");
       }).to.throw(
-        "Custom error message: expected transaction to emit event TestEvent, but was not emitted",
+        "Custom error message: expected transaction to emit event 'TestEvent', but was not emitted",
       );
     });
 
