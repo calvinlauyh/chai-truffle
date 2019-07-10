@@ -57,7 +57,7 @@ describe(".evmRevert()", () => {
           gas: 30000,
         }),
       ).to.evmRevert(),
-      "expected transaction to fail in EVM because of 'revert', but it failed of another reason",
+      "expected transaction to fail in EVM because of 'revert', but it failed of another reason:",
     );
   });
 

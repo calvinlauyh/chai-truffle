@@ -51,7 +51,7 @@ describe(".not.emitEventWithArgsAt", () => {
           1,
         );
       }).to.throw(
-        "expected transaction not to emit event MessageEvent at position 1 with matching argument(s), but was emitted",
+        "expected transaction not to emit event 'MessageEvent' at position 1 with matching argument(s), but was emitted",
       );
     });
 
@@ -66,7 +66,7 @@ describe(".not.emitEventWithArgsAt", () => {
           "Custom error message",
         );
       }).to.throw(
-        "Custom error message: expected transaction not to emit event MessageEvent at position 1 with matching argument(s), but was emitted",
+        "Custom error message: expected transaction not to emit event 'MessageEvent' at position 1 with matching argument(s), but was emitted",
       );
     });
 
@@ -145,7 +145,7 @@ describe(".emitEventWithArgsAt", () => {
     expect(() => {
       expect(response).to.emitEventWithArgsAt("TestEvent", () => true, 0);
     }).to.throw(
-      "expected transaction to emit event TestEvent at position 0 with matching argument(s), but was not emitted",
+      "expected transaction to emit event 'TestEvent' at position 0 with matching argument(s), but was not emitted",
     );
   });
 
@@ -166,7 +166,7 @@ describe(".emitEventWithArgsAt", () => {
           10,
         );
       }).to.throw(
-        `expected transaction to emit event MessageEvent at position 10, but only 2 event(s) are emitted`,
+        `expected transaction to emit event 'MessageEvent' at position 10, but only 2 event(s) are emitted`,
       );
     });
 
@@ -180,7 +180,7 @@ describe(".emitEventWithArgsAt", () => {
           1,
         );
       }).to.throw(
-        "expected transaction to emit event MessageEvent at position 1 with matching argument(s), but argument(s) do not match",
+        "expected transaction to emit event 'MessageEvent' at position 1 with matching argument(s), but argument(s) do not match",
       );
     });
 
@@ -194,7 +194,7 @@ describe(".emitEventWithArgsAt", () => {
           1,
         );
       }).to.throw(
-        "expected transaction to emit event TestEvent at position 1 with matching argument(s), but was not emitted",
+        "expected transaction to emit event 'TestEvent' at position 1 with matching argument(s), but was not emitted",
       );
     });
 
@@ -209,61 +209,68 @@ describe(".emitEventWithArgsAt", () => {
           "Custom error message",
         );
       }).to.throw(
-        "Custom error message: expected transaction to emit event TestEvent at position 1 with matching argument(s), but was not emitted",
+        "Custom error message: expected transaction to emit event 'TestEvent' at position 1 with matching argument(s), but was not emitted",
       );
     });
 
-    context("Call emits name-matched event but with mismatched arguments", () => {
-      // tslint:disable-next-line:max-line-length
-      it("should fail when arguments assert function return false", () => {
-        expect(() => {
-          expect(response).to.emitEventWithArgsAt(
-            "MessageEvent",
-            (args: Truffle.TransactionLogArgs): boolean => {
-              return args.message === "Call me maybe?";
-            },
-            1,
+    context(
+      "Call emits name-matched event but with mismatched arguments",
+      () => {
+        // tslint:disable-next-line:max-line-length
+        it("should fail when arguments assert function return false", () => {
+          expect(() => {
+            expect(response).to.emitEventWithArgsAt(
+              "MessageEvent",
+              (args: Truffle.TransactionLogArgs): boolean => {
+                return args.message === "Call me maybe?";
+              },
+              1,
+            );
+          }).to.throw(
+            "expected transaction to emit event 'MessageEvent' at position 1 with matching argument(s), but argument(s) do not match",
           );
-        }).to.throw(
-          "expected transaction to emit event MessageEvent at position 1 with matching argument(s), but argument(s) do not match",
-        );
-      });
+        });
 
-      it("should fail with thrown Error message when arguments assert function throws Error", () => {
-        expect(() => {
-          expect(response).to.emitEventWithArgsAt(
-            "MessageEvent",
-            () => {
-              throw new Error("Arguments not match");
-            },
-            1,
+        it("should fail with thrown Error message when arguments assert function throws Error", () => {
+          expect(() => {
+            expect(response).to.emitEventWithArgsAt(
+              "MessageEvent",
+              () => {
+                throw new Error("Arguments not match");
+              },
+              1,
+            );
+          }).to.throw(
+            "expected transaction to emit event 'MessageEvent' at position 1 with matching argument(s), but argument(s) assert function got: 'Arguments not match'",
           );
-        }).to.throw(
-          "expected transaction to emit event MessageEvent at position 1 with matching argument(s), but argument(s) assert function got: Arguments not match",
-        );
-      });
+        });
 
-      // tslint:disable-next-line:max-line-length
-      it("should fail with AssertionError with expected and actual values when arguments assert function throws AssertionError", async () => {
-        try {
-          expect(response).emitEventWithArgsAt("MessageEvent", (): boolean => {
-            expect("Hello").to.eq("World");
-            return false;
-          }, 1);
-        } catch (err) {
-          expect(err).to.be.instanceOf(chai.AssertionError);
-          expect(err.message).to.eq(
-            "expected transaction to emit event MessageEvent at position 1 with matching argument(s), but argument(s) assert function got: expected 'Hello' to equal 'World'",
-          );
-          expect(err.expected).to.eq("World");
-          expect(err.actual).to.eq("Hello");
+        // tslint:disable-next-line:max-line-length
+        it("should fail with AssertionError with expected and actual values when arguments assert function throws AssertionError", async () => {
+          try {
+            expect(response).emitEventWithArgsAt(
+              "MessageEvent",
+              (): boolean => {
+                expect("Hello").to.eq("World");
+                return false;
+              },
+              1,
+            );
+          } catch (err) {
+            expect(err).to.be.instanceOf(chai.AssertionError);
+            expect(err.message).to.eq(
+              "expected transaction to emit event 'MessageEvent' at position 1 with matching argument(s), but argument(s) assert function got: 'expected 'Hello' to equal 'World''",
+            );
+            expect(err.expected).to.eq("World");
+            expect(err.actual).to.eq("Hello");
 
-          return;
-        }
+            return;
+          }
 
-        throw new Error("Should thrown Error");
-      });
-    });
+          throw new Error("Should thrown Error");
+        });
+      },
+    );
 
     // tslint:disable-next-line:max-line-length
     it("should pass when the call emits the exact matching event at target position", async () => {

@@ -42,7 +42,7 @@ describe(".not.emitEventWithArgs", () => {
         },
       );
     }).to.throw(
-      "expected transaction not to emit event MessageEvent with matching argument(s), but was emitted",
+      "expected transaction not to emit event 'MessageEvent' with matching argument(s), but was emitted",
     );
   });
 
@@ -59,7 +59,7 @@ describe(".not.emitEventWithArgs", () => {
         "Custom error message",
       );
     }).to.throw(
-      "Custom error message: expected transaction not to emit event MessageEvent with matching argument(s), but was emitted",
+      "Custom error message: expected transaction not to emit event 'MessageEvent' with matching argument(s), but was emitted",
     );
   });
 
@@ -90,7 +90,7 @@ describe(".not.emitEventWithArgs", () => {
           },
         );
       }).to.throw(
-        "expected transaction not to emit event MessageEvent with matching argument(s), but was emitted",
+        "expected transaction not to emit event 'MessageEvent' with matching argument(s), but was emitted",
       );
     });
 
@@ -137,7 +137,7 @@ describe(".emitEventWithArgs", () => {
     expect(() => {
       expect(response).to.emitEventWithArgs("TestEvent", () => true);
     }).to.throw(
-      "expected transaction to emit event TestEvent with matching argument(s), but was not emitted",
+      "expected transaction to emit event 'TestEvent' with matching argument(s), but was not emitted",
     );
   });
 
@@ -148,7 +148,7 @@ describe(".emitEventWithArgs", () => {
     expect(() => {
       expect(response).to.emitEventWithArgs("TestEvent", () => true, "Custom error message");
     }).to.throw(
-      "Custom error message: expected transaction to emit event TestEvent with matching argument(s), but was not emitted",
+      "Custom error message: expected transaction to emit event 'TestEvent' with matching argument(s), but was not emitted",
     );
   });
 
@@ -177,7 +177,7 @@ describe(".emitEventWithArgs", () => {
           },
         );
       }).to.throw(
-        "expected transaction to emit event MessageEvent with matching argument(s), but argument(s) do not match",
+        "expected transaction to emit event 'MessageEvent' with matching argument(s), but argument(s) do not match",
       );
     });
 
@@ -190,7 +190,7 @@ describe(".emitEventWithArgs", () => {
           throw new Error("Arguments not match");
         });
       }).to.throw(
-        "expected transaction to emit event MessageEvent with matching argument(s), but argument(s) assert function got: Arguments not match",
+        "expected transaction to emit event 'MessageEvent' with matching argument(s), but argument(s) assert function got: 'Arguments not match'",
       );
     });
 
@@ -207,7 +207,7 @@ describe(".emitEventWithArgs", () => {
       } catch (err) {
         expect(err).to.be.instanceOf(chai.AssertionError);
         expect(err.message).to.eq(
-          "expected transaction to emit event MessageEvent with matching argument(s), but argument(s) assert function got: expected 'Hello' to equal 'World'",
+          "expected transaction to emit event 'MessageEvent' with matching argument(s), but argument(s) assert function got: 'expected 'Hello' to equal 'World''",
         );
         expect(err.expected).to.eq("World");
         expect(err.actual).to.eq("Hello");
@@ -235,7 +235,7 @@ describe(".emitEventWithArgs", () => {
           },
         );
       }).to.throw(
-        "expected transaction to emit event MessageEvent with matching argument(s), but argument(s) do not match",
+        "expected transaction to emit event 'MessageEvent' with matching argument(s), but argument(s) do not match",
       );
     });
 

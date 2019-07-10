@@ -89,7 +89,7 @@ describe(".evmFail()", () => {
       expect(contractInstance.revertImmediately()).to.evmFail(
         "It fails, I don't know why",
       ),
-      "expected transaction to fail in EVM because of 'It fails, I don't know why', but it failed of another reason",
+      "expected transaction to fail in EVM because of 'It fails, I don't know why', but it failed of another reason:",
     );
   });
 
@@ -101,7 +101,7 @@ describe(".evmFail()", () => {
         "It fails, I don't know why",
         "Custom error message",
       ),
-      "Custom error message: expected transaction to fail in EVM because of 'It fails, I don't know why', but it failed of another reason",
+      "Custom error message: expected transaction to fail in EVM because of 'It fails, I don't know why', but it failed of another reason:",
     );
   });
 
