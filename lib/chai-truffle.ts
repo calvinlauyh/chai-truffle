@@ -286,6 +286,9 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     return this;
   });
 
+  method("evmInvalidOpcode", function(this: ChaiUse.Assertion, message?: string) {
+    return this.to.evmFail("invalid opcode", message);
+  });
   method("evmOutOfGas", function(this: ChaiUse.Assertion, message?: string) {
     return this.to.evmFail("out of gas", message);
   });

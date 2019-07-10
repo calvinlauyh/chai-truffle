@@ -14,6 +14,7 @@ declare interface TestContractInstance extends Truffle.ContractInstance {
   emitTestEvent: Truffle.ContractFunction<() => Promise<void>>;
   doNothing: Truffle.ContractFunction<() => Promise<void>>;
   drainGas: Truffle.ContractFunction<() => Promise<void>>;
+  assertImmediately: Truffle.ContractFunction<() => Promise<void>>;
   revertImmediately: Truffle.ContractFunction<() => Promise<void>>;
   nextEventId: Truffle.ContractFunction<() => Promise<BN>>;
 }

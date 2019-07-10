@@ -27,6 +27,7 @@ declare global {
       eventLength(expectedLength: number, message?: string): Assertion;
       eventLengthOf(expectedLength: number, message?: string): Assertion;
       evmFail(errorMessage?: string, message?: string): Assertion;
+      evmInvalidOpcode(message?: string): Assertion;
       evmOutOfGas(message?: string): Assertion;
       evmRevert(message?: string): Assertion;
       evmSuccess(message?: string): Assertion;
@@ -55,6 +56,7 @@ declare global {
       eventLength<T>(val: T, expectedLength: number, message?: string): void;
       eventLengthOf<T>(val: T, expectedLength: number, message?: string): void;
       evmFail<T>(val: T, errorMessage?: string, message?: string): void;
+      evmInvalidOpcode<T>(val: T, message?: string): void;
       evmOutOfGas<T>(val: T, message?: string): void;
       evmRevert<T>(val: T, message?: string): void;
       evmSuccess<T>(val: T, message?: string): void;
