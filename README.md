@@ -43,7 +43,7 @@ npm install chai-truffle
 ```
 
 ## How to use
-**Chai Truffle** is compatible with both CommonJS and ES6 module system.
+**Chai Truffle** is compatible with both CommonJS module system and TypeScript.
 
 ### CommonJS
 ```javascript
@@ -52,7 +52,7 @@ const ChaiTruffle = require("chai-truffle");
 chai.use(ChaiTruffle);
 ```
 
-### ES6
+### TypeScript
 ```typescript
 import chai from "chai";
 import chaiTruffle = require("chai-truffle");
