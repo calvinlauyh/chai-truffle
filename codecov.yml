@@ -7,3 +7,4 @@ coverage:
     patch: off
 ignore:
   - "example"
+  - "**/*.test.(js|ts)"
