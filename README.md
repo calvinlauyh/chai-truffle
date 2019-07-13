@@ -7,7 +7,6 @@
 
 **Chai Truffle** extends [Chai](http://chaijs.com/) to provide assertion for Truffle Transaction. Complete TypeScript typings are provided with this library.
 
-
 With **Chai Truffle**, you can assert event emission on contract call easily. This library tries to make assertion as fluent as English sentence. 
 ```
 const response = await bankInstance.deposit(oneEtherInWei);
@@ -127,7 +126,7 @@ Remarks: Event log position begins at 0
 ### .eventLength(length[, message])
 
 Assert if transaction has emitted `length` of events.
-```
+```javascript
 const response = bankContract.batchWithdraw(oneEtherInWei);
 
 expect(response).to.have.eventLength(2);
