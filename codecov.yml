@@ -5,3 +5,7 @@ coverage:
   status:
     project: off
     patch: off
+ignore:
+  - "coverage"
+  - "example"
+  - "test"

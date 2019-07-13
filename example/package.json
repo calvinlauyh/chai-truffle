@@ -1,0 +1,18 @@
+{
+  "name": "chai-truffle-example",
+  "version": "0.1.0",
+  "author": "Calvin Lau <calvinlauco@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/calvinlauco/chai-truffle.git"
+  },
+  "license": "MIT",
+  "types": "index.d.ts",
+  "scripts": {
+    "pretest": "yarn build",
+    "test": "yarn truffle test",
+    "truffle": "../node_modules/.bin/truffle",
+    "prebuild": "cd .. && yarn",
+    "build": "cd .. && yarn build"
+  }
+}
