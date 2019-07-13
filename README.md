@@ -8,7 +8,7 @@
 **Chai Truffle** extends [Chai](http://chaijs.com/) to provide assertion for Truffle Transaction. Complete TypeScript typings are provided with this library.
 
 With **Chai Truffle**, you can assert event emission on contract call easily. This library tries to make assertion as fluent as English sentence. 
-```
+```javascript
 const response = await bankInstance.deposit(oneEtherInWei);
 
 expect(response)
@@ -22,7 +22,7 @@ expect(response)
 ```
 
 **Chai Truffle** can also help assert EVM execution result.
-```
+```javascript
 return expect(response).to.evmRevert();
 ```
 Remarks: When trying to used with EVM execution assertion, `return` must be used because it is an asynchronous assertion.
