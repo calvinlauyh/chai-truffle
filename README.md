@@ -5,7 +5,7 @@
 ![https://travis-ci.org/calvinlauco/chai-truffle](https://img.shields.io/travis/calvinlauco/chai-truffle/master.svg)
 ![https://github.com/calvinlauco/chai-truffle](https://img.shields.io/github/license/calvinlauco/chai-truffle.svg)
 
-**Chai Truffle** extends [Chai](http://chaijs.com/) to provide assertion for Truffle Transaction. Complete TypeScript typings are provided with this library.
+**Chai Truffle** extends [Chai](http://chaijs.com/) to provide assertion for [Truffle](https://www.trufflesuite.com/) Transaction. Complete TypeScript typings are provided with this library.
 
 With **Chai Truffle**, you can assert event emission on contract call easily. This library tries to make assertion as fluent as English sentence. 
 ```javascript
@@ -150,7 +150,7 @@ event Deposit(
 );
 ```
 The corresponding `args` object will be:
-```json
+```javascript
 {
     from: "{From Address}",
     [0]: "{From Address}",
@@ -180,7 +180,7 @@ expect(response).to.emitEvent("Deposit").withEventArgs((args) => {
 });
 
 ///
-$ AssertionError: expected transaction to emit event 'Withdrawal' with matching argument(s), but argument(s) assert function got: 'expected '0x627306090abaB3A6e1400e9345bC60c78a8BEf57' to equal '0xf17f52151EbEF6C7334FAD080c5704D77216b732''
+$ AssertionError: expected transaction to emit event 'Deposit' with matching argument(s), but argument(s) assert function got: 'expected '0x627306090abaB3A6e1400e9345bC60c78a8BEf57' to equal '0xf17f52151EbEF6C7334FAD080c5704D77216b732''
       + expected - actual
 
       -0x627306090abaB3A6e1400e9345bC60c78a8BEf57
