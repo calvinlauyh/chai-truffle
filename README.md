@@ -1,9 +1,9 @@
 # Chai Assertions for Truffle
 
-![https://www.npmjs.com/package/chai-truffle](https://img.shields.io/npm/v/chai-truffle.svg)
-![https://codecov.io/gh/calvinlauco/chai-truffle](https://img.shields.io/codecov/c/github/calvinlauco/chai-truffle.svg?token=da31e45005754a838c6e44ce946ed23a)
-![https://travis-ci.org/calvinlauco/chai-truffle](https://img.shields.io/travis/calvinlauco/chai-truffle/master.svg)
-![https://github.com/calvinlauco/chai-truffle](https://img.shields.io/github/license/calvinlauco/chai-truffle.svg)
+[![NPM Version](https://img.shields.io/npm/v/chai-truffle.svg)](https://www.npmjs.com/package/chai-truffle)
+[![Code Coverage](https://img.shields.io/codecov/c/github/calvinlauco/chai-truffle.svg?token=da31e45005754a838c6e44ce946ed23a)](https://codecov.io/gh/calvinlauco/chai-truffle)
+[![Build Status](https://img.shields.io/travis/calvinlauco/chai-truffle/master.svg)](https://travis-ci.org/calvinlauco/chai-truffle)
+[![License: MIT](https://img.shields.io/github/license/calvinlauco/chai-truffle.svg)](https://github.com/calvinlauco/chai-truffle)
 
 **Chai Truffle** extends [Chai](http://chaijs.com/) to provide assertion for [Truffle](https://www.trufflesuite.com/) Transaction. Complete TypeScript typings are provided with this library.
 
