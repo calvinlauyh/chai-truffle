@@ -1,7 +1,5 @@
-/// <reference types="../index" />
-/// <reference types="../typings/chai" />
-/// <reference types="../typings/truffle" />
-
+import { ChaiUse } from "../typings/chai-use";
+import { TrufflePolyfill } from "../typings/truffle-polyfill";
 import { isNil } from "./utils";
 
 export = (chai: any, utils: ChaiUse.Utils): void => {
@@ -34,7 +32,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
     }
     assertIsTransactionResponse(this._obj, message);
 
-    const obj: Truffle.TransactionResponse = this._obj;
+    const obj: TrufflePolyfill.TransactionResponse = this._obj;
     const matchedEventLogIndexList = obj.logs
       .filter((log) => !isNil(log.event) && log.event === expectedEventName)
       .map((log) => log.logIndex);
@@ -58,11 +56,11 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
   ): ChaiUse.Assertion => {
     assertIsTransactionResponse(assertion._obj, message);
 
-    const obj: Truffle.TransactionResponse = assertion._obj;
+    const obj: TrufflePolyfill.TransactionResponse = assertion._obj;
     const logWithEventFound = obj.logs.find((log) => !isNil(log.event));
     const hasEventEmitted = !!logWithEventFound;
     const eventEmitted =
-      hasEventEmitted && (logWithEventFound as Truffle.TransactionLog).event;
+      hasEventEmitted && (logWithEventFound as TrufflePolyfill.TransactionLog).event;
 
     assertion.assert(
       hasEventEmitted,
@@ -83,7 +81,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
 
     assertIsTransactionResponse(this._obj, message);
 
-    const obj: Truffle.TransactionResponse = this._obj;
+    const obj: TrufflePolyfill.TransactionResponse = this._obj;
 
     const objLogSize = obj.logs.length;
     const positionOutOfLogsSize = position > objLogSize - 1;
@@ -123,7 +121,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
 
     assertIsTransactionResponse(this._obj, message);
 
-    const obj: Truffle.TransactionResponse = this._obj;
+    const obj: TrufflePolyfill.TransactionResponse = this._obj;
 
     const matchedEventLogs = obj.logs.filter(
       (log) => !isNil(log) && log.event === expectedEventName,
@@ -163,7 +161,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
 
     assertIsTransactionResponse(this._obj, message);
 
-    const obj: Truffle.TransactionResponse = this._obj;
+    const obj: TrufflePolyfill.TransactionResponse = this._obj;
 
     const objLogSize = obj.logs.length;
     const isPositionOutOfLogsSize = position > obj.logs.length - 1;
@@ -211,7 +209,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
 
     assertIsTransactionResponse(this._obj, message);
 
-    const actualEventLogLength = (this._obj as Truffle.TransactionResponse).logs
+    const actualEventLogLength = (this._obj as TrufflePolyfill.TransactionResponse).logs
       .length;
     this.assert(
       actualEventLogLength === expectedLength,
@@ -361,7 +359,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
 
   method("withEventArgs", function(
     this: ChaiUse.Assertion,
-    assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+    assertArgsFn: (args: TrufflePolyfill.TransactionLogArgs) => boolean,
   ): ChaiUse.Assertion {
     if (!isEmitEventAsserted(this)) {
       throw new Error(
@@ -374,7 +372,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
       );
     }
 
-    const obj: Truffle.TransactionResponse = this._obj;
+    const obj: TrufflePolyfill.TransactionResponse = this._obj;
     const eventLogPositionList = getEmitEventLogPositionList(this);
 
     const firstMatchedEventLogIndex = eventLogPositionList[0];
@@ -399,7 +397,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
 
   const assertEventArgsFromMatchedEventLogsWithAssertion = (
     assertion: ChaiUse.Assertion,
-    matchedEventLogs: Truffle.TransactionLog[],
+    matchedEventLogs: TrufflePolyfill.TransactionLog[],
     assertArgsFn: AssertArgsFn,
     errorMessagePrefix: string,
     negatedErrorMessage: string,
@@ -511,7 +509,7 @@ export = (chai: any, utils: ChaiUse.Utils): void => {
   };
 };
 
-type AssertArgsFn = (args: Truffle.TransactionLogArgs) => boolean;
+type AssertArgsFn = (args: TrufflePolyfill.TransactionLogArgs) => boolean;
 
 interface FailAssertionValue {
   expected?: any;

@@ -5,11 +5,7 @@ type Web3TransactionReceipt = import("web3/types").TransactionReceipt;
 type Web3EthTx = import("web3/eth/types").Tx;
 type Web3Log = import("web3/types").Log;
 
-declare const web3: import("web3");
-
-declare function contract(name: string, testSuite: (accounts: Truffle.Account[]) => void): void;
-declare const artifacts: Truffle.Artifacts;
-declare namespace Truffle {
+export module TrufflePolyfill {
   export type Account = string;
 
   export interface TransactionResponse {

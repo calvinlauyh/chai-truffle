@@ -1,9 +1,6 @@
-// Type definitions for chai-arrays 1.0
-// Project: https://github.com/GaneshSPatil/chai-arrays
-// Definitions by: Clément Prévot <https://github.com/clementprevot>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
 /// <reference types="chai" />
+
+import { TrufflePolyfill } from "./typings/truffle-polyfill";
 
 declare global {
   namespace Chai {
@@ -15,12 +12,12 @@ declare global {
       emitEventAt(eventName: string, position: number, message?: string): Assertion;
       emitEventWithArgs(
         eventName: string,
-        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+        assertArgsFn: (args: TrufflePolyfill.TransactionLogArgs) => boolean,
         message?: string,
       ): Assertion;
       emitEventWithArgsAt(
         eventName: string,
-        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+        assertArgsFn: (args: TrufflePolyfill.TransactionLogArgs) => boolean,
         position: number,
         message?: string,
       ): Assertion;
@@ -33,7 +30,7 @@ declare global {
       evmSuccess(message?: string): Assertion;
       transactionResponse: Assertion;
       withEventArgs(
-        assertArgsFn: (args: Truffle.TransactionLogArgs, message?: string) => boolean,
+        assertArgsFn: (args: TrufflePolyfill.TransactionLogArgs, message?: string) => boolean,
       ): Assertion;
     }
 
@@ -43,13 +40,13 @@ declare global {
       emitEventWithArgs<T>(
         val: T,
         eventName: string,
-        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+        assertArgsFn: (args: TrufflePolyfill.TransactionLogArgs) => boolean,
         message?: string,
       ): void;
       emitEventWithArgsAt<T>(
         val: T,
         eventName: string,
-        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+        assertArgsFn: (args: TrufflePolyfill.TransactionLogArgs) => boolean,
         position: number,
         message?: string,
       ): void;
@@ -62,7 +59,7 @@ declare global {
       evmSuccess<T>(val: T, message?: string): void;
       withEventArgs<T>(
         val: T,
-        assertArgsFn: (args: Truffle.TransactionLogArgs) => boolean,
+        assertArgsFn: (args: TrufflePolyfill.TransactionLogArgs) => boolean,
         message?: string,
       ): void;
     }

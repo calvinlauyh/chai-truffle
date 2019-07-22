@@ -1,5 +1,7 @@
 import chai, { expect } from "chai";
 import chaiTruffle from "../../lib/chai-truffle";
+import { TrufflePolyfill } from "../../typings/truffle-polyfill";
+import { TestContract } from "../TestContract";
 
 const TestContract: TestContract = artifacts.require("Test");
 
@@ -51,7 +53,7 @@ describe("not.withEventArgs", () => {
     expect(() => {
       expect(response)
         .to.emitEvent("MessageEvent")
-        .not.withEventArgs((args: Truffle.TransactionLogArgs): boolean => {
+        .not.withEventArgs((args: TrufflePolyfill.TransactionLogArgs): boolean => {
           return args.message === "Hello World";
         });
     }).to.throw(
@@ -65,7 +67,7 @@ describe("not.withEventArgs", () => {
 
     expect(response)
       .to.emitEvent("MessageEvent")
-      .not.withEventArgs((args: Truffle.TransactionLogArgs): boolean => {
+      .not.withEventArgs((args: TrufflePolyfill.TransactionLogArgs): boolean => {
         return args.message === "Call me maybe?";
       });
   });
@@ -82,7 +84,7 @@ describe("not.withEventArgs", () => {
       expect(() => {
         expect(response)
           .to.emitEvent("MessageEvent")
-          .not.withEventArgs((args: Truffle.TransactionLogArgs): boolean => {
+          .not.withEventArgs((args: TrufflePolyfill.TransactionLogArgs): boolean => {
             return args.message === "World";
           });
       }).to.throw(
@@ -99,7 +101,7 @@ describe("not.withEventArgs", () => {
 
       expect(response)
         .to.emitEvent("MessageEvent")
-        .not.withEventArgs((args: Truffle.TransactionLogArgs): boolean => {
+        .not.withEventArgs((args: TrufflePolyfill.TransactionLogArgs): boolean => {
           return args.message === "Call me maybe?";
         });
     });
@@ -139,7 +141,7 @@ describe("withEventArgs", () => {
       expect(() => {
         expect(response)
           .to.emitEvent("MessageEvent")
-          .withEventArgs((args: Truffle.TransactionLogArgs): boolean => {
+          .withEventArgs((args: TrufflePolyfill.TransactionLogArgs): boolean => {
             return args.message === "Call me maybe?";
           });
       }).to.throw(
@@ -195,7 +197,7 @@ describe("withEventArgs", () => {
 
     expect(response)
       .to.emitEvent("MessageEvent")
-      .withEventArgs((args: Truffle.TransactionLogArgs): boolean => {
+      .withEventArgs((args: TrufflePolyfill.TransactionLogArgs): boolean => {
         return args.message === "Hello World";
       });
   });
@@ -211,7 +213,7 @@ describe("withEventArgs", () => {
       expect(() => {
         expect(response)
           .to.emitEvent("MessageEvent")
-          .withEventArgs((args: Truffle.TransactionLogArgs): boolean => {
+          .withEventArgs((args: TrufflePolyfill.TransactionLogArgs): boolean => {
             return args.message === "Call me maybe?";
           });
       }).to.throw(
@@ -229,7 +231,7 @@ describe("withEventArgs", () => {
 
       expect(response)
         .to.emitEvent("MessageEvent")
-        .withEventArgs((args: Truffle.TransactionLogArgs): boolean => {
+        .withEventArgs((args: TrufflePolyfill.TransactionLogArgs): boolean => {
           return args.message === "I don't know why";
         });
     });

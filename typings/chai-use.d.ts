@@ -1,4 +1,4 @@
-declare namespace ChaiUse {
+export module ChaiUse {
   export interface Utils {
     flag(assertion: Chai.Assertion, name: string): any;
     flag(assertion: Chai.Assertion, name: string, value: any): void;

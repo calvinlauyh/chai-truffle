@@ -65,5 +65,7 @@
     "lib/**/*.ts",
     "test/**/*.ts",
     "test/**/*.js",
+    "./typings",
+    "index.d.ts"
   ]
 }

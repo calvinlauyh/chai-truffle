@@ -1,10 +1,12 @@
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
+import { TrufflePolyfill } from "../typings/truffle-polyfill";
+import { TestContract } from "./TestContract";
 chai.use(chaiAsPromised);
 
 const TestContract: TestContract = artifacts.require("Test");
 
-contract("Truffle Learning Test", (accounts: Truffle.Account[]) => {
+contract("Truffle Learning Test", (accounts: TrufflePolyfill.Account[]) => {
   describe("Error message", () => {
     it("should throw error when transaction is out of gas", async () => {
       const contractInstance = await TestContract.new();
