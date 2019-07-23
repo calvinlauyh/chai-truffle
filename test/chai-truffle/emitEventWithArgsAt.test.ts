@@ -1,5 +1,7 @@
 import chai, { expect } from "chai";
 import chaiTruffle from "../../lib/chai-truffle";
+import { TrufflePolyfill } from "../../typings/truffle-polyfill";
+import { TestContract } from "../TestContract";
 
 const TestContract: TestContract = artifacts.require("Test");
 
@@ -35,7 +37,7 @@ describe(".not.emitEventWithArgsAt", () => {
   });
 
   context("Given multiple MessageEvents are emitted from transaction", () => {
-    let response: Truffle.TransactionResponse;
+    let response: TrufflePolyfill.TransactionResponse;
     beforeEach(async () => {
       const contractInstance = await TestContract.new();
       response = await contractInstance.emitTwoMessageEvents("Hello", "World");
@@ -45,7 +47,7 @@ describe(".not.emitEventWithArgsAt", () => {
       expect(() => {
         expect(response).not.to.emitEventWithArgsAt(
           "MessageEvent",
-          (args: Truffle.TransactionLogArgs): boolean => {
+          (args: TrufflePolyfill.TransactionLogArgs): boolean => {
             return args.message === "World";
           },
           1,
@@ -59,7 +61,7 @@ describe(".not.emitEventWithArgsAt", () => {
       expect(() => {
         expect(response).not.to.emitEventWithArgsAt(
           "MessageEvent",
-          (args: Truffle.TransactionLogArgs): boolean => {
+          (args: TrufflePolyfill.TransactionLogArgs): boolean => {
             return args.message === "World";
           },
           1,
@@ -73,7 +75,7 @@ describe(".not.emitEventWithArgsAt", () => {
     it("should pass when the call emit different event at target position", () => {
       expect(response).not.to.emitEventWithArgsAt(
         "TestEvent",
-        (args: Truffle.TransactionLogArgs): boolean => {
+        (args: TrufflePolyfill.TransactionLogArgs): boolean => {
           return args.purpose === "Testing";
         },
         1,
@@ -84,7 +86,7 @@ describe(".not.emitEventWithArgsAt", () => {
     it("should pass when the call emit name-matched event but with mismatched arguments at target position", () => {
       expect(response).not.to.emitEventWithArgsAt(
         "MessageEvent",
-        (args: Truffle.TransactionLogArgs): boolean => {
+        (args: TrufflePolyfill.TransactionLogArgs): boolean => {
           return args.message === "Call me maybe?";
         },
         1,
@@ -94,7 +96,7 @@ describe(".not.emitEventWithArgsAt", () => {
     it("should pass when asserting event at out of bounded position", () => {
       expect(response).not.to.emitEventWithArgsAt(
         "MessageEvent",
-        (args: Truffle.TransactionLogArgs): boolean => {
+        (args: TrufflePolyfill.TransactionLogArgs): boolean => {
           return args.message === "Call me maybe?";
         },
         10,
@@ -104,7 +106,7 @@ describe(".not.emitEventWithArgsAt", () => {
     it("should pass when the call emit the exact matching event but at different position", () => {
       expect(response).not.to.emitEventWithArgsAt(
         "MessageEvent",
-        (args: Truffle.TransactionLogArgs): boolean => {
+        (args: TrufflePolyfill.TransactionLogArgs): boolean => {
           return args.message === "Hello";
         },
         1,
@@ -150,7 +152,7 @@ describe(".emitEventWithArgsAt", () => {
   });
 
   context("Given multiple MessageEvents are emitted from transaction", () => {
-    let response: Truffle.TransactionResponse;
+    let response: TrufflePolyfill.TransactionResponse;
     beforeEach(async () => {
       const contractInstance = await TestContract.new();
       response = await contractInstance.emitTwoMessageEvents("Hello", "World");
@@ -160,7 +162,7 @@ describe(".emitEventWithArgsAt", () => {
       expect(() => {
         expect(response).to.emitEventWithArgsAt(
           "MessageEvent",
-          (args: Truffle.TransactionLogArgs): boolean => {
+          (args: TrufflePolyfill.TransactionLogArgs): boolean => {
             return args.message === "Hello";
           },
           10,
@@ -174,7 +176,7 @@ describe(".emitEventWithArgsAt", () => {
       expect(() => {
         expect(response).to.emitEventWithArgsAt(
           "MessageEvent",
-          (args: Truffle.TransactionLogArgs): boolean => {
+          (args: TrufflePolyfill.TransactionLogArgs): boolean => {
             return args.message === "Hello";
           },
           1,
@@ -188,7 +190,7 @@ describe(".emitEventWithArgsAt", () => {
       expect(() => {
         expect(response).to.emitEventWithArgsAt(
           "TestEvent",
-          (args: Truffle.TransactionLogArgs): boolean => {
+          (args: TrufflePolyfill.TransactionLogArgs): boolean => {
             return args.purpose === "Testing";
           },
           1,
@@ -202,7 +204,7 @@ describe(".emitEventWithArgsAt", () => {
       expect(() => {
         expect(response).to.emitEventWithArgsAt(
           "TestEvent",
-          (args: Truffle.TransactionLogArgs): boolean => {
+          (args: TrufflePolyfill.TransactionLogArgs): boolean => {
             return args.purpose === "Testing";
           },
           1,
@@ -221,7 +223,7 @@ describe(".emitEventWithArgsAt", () => {
           expect(() => {
             expect(response).to.emitEventWithArgsAt(
               "MessageEvent",
-              (args: Truffle.TransactionLogArgs): boolean => {
+              (args: TrufflePolyfill.TransactionLogArgs): boolean => {
                 return args.message === "Call me maybe?";
               },
               1,
@@ -276,7 +278,7 @@ describe(".emitEventWithArgsAt", () => {
     it("should pass when the call emits the exact matching event at target position", async () => {
       expect(response).to.emitEventWithArgsAt(
         "MessageEvent",
-        (args: Truffle.TransactionLogArgs): boolean => {
+        (args: TrufflePolyfill.TransactionLogArgs): boolean => {
           return args.message === "World";
         },
         1,

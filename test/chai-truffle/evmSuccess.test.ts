@@ -1,6 +1,7 @@
 import chai, { expect } from "chai";
 import chaiTruffle from "../../lib/chai-truffle";
 import { assertPromiseShouldReject } from "../assert-util";
+import { TestContract } from "../TestContract";
 
 const TestContract: TestContract = artifacts.require("Test");
 

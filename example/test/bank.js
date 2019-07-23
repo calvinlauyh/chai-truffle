@@ -6,8 +6,8 @@ chai.use(chaiTruffle);
 const expect = chai.expect;
 
 const Bank = artifacts.require("Bank");
-const oneEtherInWei = web3.utils.toWei("1", "wei");
-const twoEtherInWei = web3.utils.toWei("2", "wei");
+const oneEtherInWei = web3.utils.toWei("1", "ether");
+const twoEtherInWei = web3.utils.toWei("2", "ether");
 
 contract("Bank", (accounts) => {
   let bankInstance;

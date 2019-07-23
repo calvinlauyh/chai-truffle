@@ -1,5 +1,6 @@
 import chai, { expect } from "chai";
 import chaiTruffle from "../../lib/chai-truffle";
+import { TestContract } from "../TestContract";
 
 const TestContract: TestContract = artifacts.require("Test");
 

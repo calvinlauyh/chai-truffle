@@ -1,20 +1,24 @@
-declare type TestContract = Truffle.Contract<TestContractInstance>;
-declare interface TestContractInstance extends Truffle.ContractInstance {
-  eventId: Truffle.ContractState<BN>;
-  emitDefaultMessageAndTestEvents: Truffle.ContractFunction<
+import { TrufflePolyfill } from "../typings/truffle-polyfill";
+
+type BN = import("bn.js");
+
+export type TestContract = TrufflePolyfill.Contract<TestContractInstance>;
+export interface TestContractInstance extends TrufflePolyfill.ContractInstance {
+  eventId: TrufflePolyfill.ContractState<BN>;
+  emitDefaultMessageAndTestEvents: TrufflePolyfill.ContractFunction<
     () => Promise<void>
   >;
-  emitDefaultMessageEvent: Truffle.ContractFunction<() => Promise<void>>;
-  emitTwoMessageEvents: Truffle.ContractFunction<
+  emitDefaultMessageEvent: TrufflePolyfill.ContractFunction<() => Promise<void>>;
+  emitTwoMessageEvents: TrufflePolyfill.ContractFunction<
     (firstMessage: string, secondMessage: string) => Promise<void>
   >;
-  emitMessageEvent: Truffle.ContractFunction<
+  emitMessageEvent: TrufflePolyfill.ContractFunction<
     (message: string) => Promise<void>
   >;
-  emitTestEvent: Truffle.ContractFunction<() => Promise<void>>;
-  doNothing: Truffle.ContractFunction<() => Promise<void>>;
-  drainGas: Truffle.ContractFunction<() => Promise<void>>;
-  assertImmediately: Truffle.ContractFunction<() => Promise<void>>;
-  revertImmediately: Truffle.ContractFunction<() => Promise<void>>;
-  nextEventId: Truffle.ContractFunction<() => Promise<BN>>;
+  emitTestEvent: TrufflePolyfill.ContractFunction<() => Promise<void>>;
+  doNothing: TrufflePolyfill.ContractFunction<() => Promise<void>>;
+  drainGas: TrufflePolyfill.ContractFunction<() => Promise<void>>;
+  assertImmediately: TrufflePolyfill.ContractFunction<() => Promise<void>>;
+  revertImmediately: TrufflePolyfill.ContractFunction<() => Promise<void>>;
+  nextEventId: TrufflePolyfill.ContractFunction<() => Promise<BN>>;
 }

@@ -1,5 +1,7 @@
 import chai, { expect } from "chai";
 import chaiTruffle from "../../lib/chai-truffle";
+import { TestContract } from "../TestContract";
+import { TrufflePolyfill } from "../../typings/truffle-polyfill";
 
 const TestContract: TestContract = artifacts.require("Test");
 
@@ -37,7 +39,7 @@ describe(".not.emitEventWithArgs", () => {
     expect(() => {
       expect(response).not.to.emitEventWithArgs(
         "MessageEvent",
-        (args: Truffle.TransactionLogArgs): boolean => {
+        (args: TrufflePolyfill.TransactionLogArgs): boolean => {
           return args.message === "Hello World";
         },
       );
@@ -53,7 +55,7 @@ describe(".not.emitEventWithArgs", () => {
     expect(() => {
       expect(response).not.to.emitEventWithArgs(
         "MessageEvent",
-        (args: Truffle.TransactionLogArgs): boolean => {
+        (args: TrufflePolyfill.TransactionLogArgs): boolean => {
           return args.message === "Hello World";
         },
         "Custom error message",
@@ -71,7 +73,7 @@ describe(".not.emitEventWithArgs", () => {
   });
 
   context("Given multiple MessageEvents are emitted from transaction", () => {
-    let response: Truffle.TransactionResponse;
+    let response: TrufflePolyfill.TransactionResponse;
     beforeEach(async () => {
       const contractInstance = await TestContract.new();
       response = await contractInstance.emitTwoMessageEvents(
@@ -85,7 +87,7 @@ describe(".not.emitEventWithArgs", () => {
       expect(() => {
         expect(response).not.to.emitEventWithArgs(
           "MessageEvent",
-          (args: Truffle.TransactionLogArgs): boolean => {
+          (args: TrufflePolyfill.TransactionLogArgs): boolean => {
             return args.message === "I don't know why";
           },
         );
@@ -97,7 +99,7 @@ describe(".not.emitEventWithArgs", () => {
     it("should pass when none of the events are exact matching", async () => {
       expect(response).not.to.emitEventWithArgs(
         "MessageEvent",
-        (args: Truffle.TransactionLogArgs): boolean => {
+        (args: TrufflePolyfill.TransactionLogArgs): boolean => {
           return args.message === "Call me maybe?";
         },
       );
@@ -158,7 +160,7 @@ describe(".emitEventWithArgs", () => {
 
     expect(response).to.emitEventWithArgs(
       "MessageEvent",
-      (args: Truffle.TransactionLogArgs): boolean => {
+      (args: TrufflePolyfill.TransactionLogArgs): boolean => {
         return args.message === "Hello World";
       },
     );
@@ -172,7 +174,7 @@ describe(".emitEventWithArgs", () => {
       expect(() => {
         expect(response).to.emitEventWithArgs(
           "MessageEvent",
-          (args: Truffle.TransactionLogArgs): boolean => {
+          (args: TrufflePolyfill.TransactionLogArgs): boolean => {
             return args.message === "Call me maybe?";
           },
         );
@@ -230,7 +232,7 @@ describe(".emitEventWithArgs", () => {
       expect(() => {
         expect(response).to.emitEventWithArgs(
           "MessageEvent",
-          (args: Truffle.TransactionLogArgs): boolean => {
+          (args: TrufflePolyfill.TransactionLogArgs): boolean => {
             return args.message === "Call me maybe?";
           },
         );
@@ -249,7 +251,7 @@ describe(".emitEventWithArgs", () => {
 
       expect(response).to.emitEventWithArgs(
         "MessageEvent",
-        (args: Truffle.TransactionLogArgs): boolean => {
+        (args: TrufflePolyfill.TransactionLogArgs): boolean => {
           return args.message === "I don't know why";
         },
       );
