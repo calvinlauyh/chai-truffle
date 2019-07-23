@@ -2,8 +2,8 @@ import { TrufflePolyfill } from "../typings/truffle-polyfill";
 
 type BN = import("bn.js");
 
-declare type TestContract = TrufflePolyfill.Contract<TestContractInstance>;
-declare interface TestContractInstance extends TrufflePolyfill.ContractInstance {
+export type TestContract = TrufflePolyfill.Contract<TestContractInstance>;
+export interface TestContractInstance extends TrufflePolyfill.ContractInstance {
   eventId: TrufflePolyfill.ContractState<BN>;
   emitDefaultMessageAndTestEvents: TrufflePolyfill.ContractFunction<
     () => Promise<void>
