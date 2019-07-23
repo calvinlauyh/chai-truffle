@@ -1,6 +1,6 @@
 import { TrufflePolyfill } from "../typings/truffle-polyfill";
 
-type BN = import("BN.js");
+type BN = import("bn.js");
 
 declare type TestContract = TrufflePolyfill.Contract<TestContractInstance>;
 declare interface TestContractInstance extends TrufflePolyfill.ContractInstance {
