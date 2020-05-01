@@ -25,7 +25,9 @@
     "prettier": "./node_modules/.bin/prettier '{src,test}/**/*.ts' --write",
     "tslint": "./node_modules/.bin/tslint --format verbose '{src,test}/**/*.ts'",
     "prepublis": "yarn build",
-    "publish": ""
+    "publish": "",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "peerDependencies": {
     "chai": ">= 1.0.0 < 5"
@@ -49,5 +51,9 @@
     "tsc": "^1.20150623.0",
     "tslint": "^5.17.0",
     "typescript": "^3.5.1"
+  },
+  "snyk": true,
+  "dependencies": {
+    "snyk": "^1.316.1"
   }
 }
