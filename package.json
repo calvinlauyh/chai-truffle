@@ -41,7 +41,7 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "codecov": "^3.5.0",
-    "mocha": "^6.1.4",
+    "mocha": "^9.1.2",
     "nyc": "^14.1.1",
     "prettier": "^1.18.1",
     "truffle": "^5.0.24",
